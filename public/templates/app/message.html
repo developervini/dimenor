@@ -1,0 +1,30 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+  <div class="container-fluid">
+  </div>
+</div>
+
+<script type="text/javascript">
+	function message()
+	{
+	
+        var response = {{ response|json_encode|raw }};
+
+        swal({  title: response['msg'],
+           type: response['class'],
+           showCancelButton: false,
+           confirmButtonText: "Ok",
+           closeOnConfirm: false
+            },function(isConfirm){
+                if (isConfirm){
+                    window.location.href = response['route'];
+                }
+        });
+    }
+
+  message();
+</script>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">{{ user.user }}</h4>
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="col-sm-12">
+						<h5>{{ user.email }}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{
+  	"require": {
+        "slim/slim": "2.*",
+        "slim/views": "*",
+        "twig/twig": "*",
+        "twig/extensions": "*",
+        "illuminate/database": "4.1.*",
+        "swiftmailer/swiftmailer" : "*"
+	},
+	"autoload": {
+        "classmap": [
+            "app/model",
+            "app/controller",
+            "app/view"
+        ]
+    }
+}

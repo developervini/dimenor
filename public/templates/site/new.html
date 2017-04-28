@@ -1,0 +1,40 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar Site</h4>
+			</div>
+			<div class="content">
+				<form action="/site-new" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Site</label>
+							<input type="text" name="site" class="form-control" required>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Endereço</label>
+							<input type="url" name="address" class="form-control" required>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Observações</label>
+							<textarea name="observation" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/site-list" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

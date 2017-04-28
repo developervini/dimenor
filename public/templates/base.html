@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="{{ baseUrl() }}/assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Dimenor</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{{ baseUrl() }}/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="{{ baseUrl() }}/assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{{ baseUrl() }}/assets/css/demo.css" rel="stylesheet" />
+
+    <!-- FullCalendar -->
+    <link rel="stylesheet" href="{{ baseUrl() }}/assets/plugins/fullcalendar/fullcalendar.min.css">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ baseUrl() }}/assets/plugins/iCheck/flat/blue.css">
+    <link rel="stylesheet" href="{{ baseUrl() }}/assets/plugins/iCheck/all.css">
+
+    <link rel="stylesheet" href="{{ baseUrl() }}/assets/plugins/fullcalendar/fullcalendar.print.css" media="print">
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="{{ baseUrl() }}/assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ baseUrl() }}/assets/plugins/select2/select2.css">
+
+</head>
+<body>
+
+    <!--   Core JS Files and PerfectScrollbar library inside jquery.ui   -->
+    <script src="{{ baseUrl() }}/assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="{{ baseUrl() }}/assets/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{ baseUrl() }}/assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <!-- InputMask -->
+    <script src="{{ baseUrl() }}/assets/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="{{ baseUrl() }}/assets/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="{{ baseUrl() }}/assets/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+
+    <!-- Sweet Alert 2 plugin -->
+    <script src="{{ baseUrl() }}/assets/js/sweetalert2.js"></script>
+
+
+    <!--  Forms Validations Plugin -->
+    <script src="{{ baseUrl() }}/assets/js/jquery.validate.min.js"></script>
+
+    <!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+    <script src="{{ baseUrl() }}/assets/js/moment.min.js"></script>
+
+    <!--  Date Time Picker Plugin is included in this js file -->
+    <script src="{{ baseUrl() }}/assets/js/bootstrap-datetimepicker.js"></script>
+
+    <!--  Select Picker Plugin -->
+    <script src="{{ baseUrl() }}/assets/js/bootstrap-selectpicker.js"></script>
+
+    <!--  Checkbox, Radio, Switch and Tags Input Plugins -->
+    <script src="{{ baseUrl() }}/assets/js/bootstrap-checkbox-radio-switch-tags.js"></script>
+
+    <!--  Charts Plugin -->
+    <script src="{{ baseUrl() }}/assets/js/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="{{ baseUrl() }}/assets/js/bootstrap-notify.js"></script>
+
+    <!-- Wizard Plugin    -->
+    <script src="{{ baseUrl() }}/assets/js/jquery.bootstrap.wizard.min.js"></script>
+
+    <!--  Bootstrap Table Plugin    -->
+    <script src="{{ baseUrl() }}/assets/js/bootstrap-table.js"></script>
+
+    <!--  Plugin for DataTables.net  -->
+    <script src="{{ baseUrl() }}/assets/js/jquery.datatables.js"></script>
+
+    <!--  Full Calendar Plugin    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+    <script src="{{ baseUrl() }}/assets/js/fullcalendar.min.js"></script>
+    <script src="{{ baseUrl() }}/assets/plugins/fullcalendar/pt-br.js"></script>
+
+    <!-- Select2 -->
+    <script src="{{ baseUrl() }}/assets/plugins/select2/select2.full.js"></script>
+
+    <!-- iCheck -->
+    <script src="{{ baseUrl() }}/assets/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Validate -->
+    <script src="{{ baseUrl() }}/assets/js/jquery.validate.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $('#registerFormValidation').validate();
+            $("[data-mask]").inputmask();
+            $(".select2").select2();
+            $('table.display').dataTable( {
+                "pageLength": 5,
+                "paging": true,
+                "lengthChange": false,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Exibir _MENU_",
+                    "zeroRecords": "Não foram encontrados registros",
+                    "info": "Exibindo página _PAGE_ de _PAGES_ com _MAX_ registros",
+                    "infoEmpty": "Sem registros",
+                    "infoFiltered": "(Filtrado de _MAX_ registros)",
+                    "search": "Pesquisar ",
+                    "paginate": {
+                        "sFirst":    "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext":     "Seguinte",
+                        "sLast":     "Último"
+                    }
+                }
+            } );
+            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                checkboxClass: 'icheckbox_flat-green'
+            });
+        });
+    </script>
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+
+    <!-- Light Bootstrap Dashboard Core javascript and methods -->
+    <script src="{{ baseUrl() }}/assets/js/light-bootstrap-dashboard.js"></script>
+
+
+</body>
+</html>
