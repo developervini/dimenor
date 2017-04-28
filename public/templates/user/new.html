@@ -1,0 +1,44 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar Usuário</h4>
+			</div>
+			<div class="content">
+				<form action="/user-new" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Usuário</label>
+							<input type="text" name="user" class="form-control" required>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>E-mail</label>
+							<input type="email" name="email" class="form-control" required>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Senha</label>
+							<input type="password" name="password" id="registerPassword" class="form-control" required>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Confirmar Senha</label>
+							<input type="password" name="password_confirm" id="registerPasswordConfirmation" equalTo="#registerPassword" class="form-control" required>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/user-list" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

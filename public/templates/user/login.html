@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<nav class="navbar navbar-transparent navbar-absolute">
+    <div class="container">    
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h5>Dimenor</h5>
+        </div>
+    </div>
+</nav>
+
+
+<div class="wrapper wrapper-full-page">
+    <div class="full-page login-page" data-color="black" data-image="../../assets/img/full-screen-image-1.jpg">   
+        
+    <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
+        <div class="content">
+            <div class="container">
+                <div class="row">                   
+                    <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+                        <form method="POST" action="/login">
+                            
+                        <!--   if you want to have the card without animation please remove the ".card-hidden" class   -->
+                            <div class="card card-hidden">
+                                <div class="header text-center">
+                                    Dimenor
+                                </div>
+                                <div class="content">
+                                    <div class="form-group">
+                                        <label>Nome de Usuário</label>
+                                        <input type="text" class="form-control" placeholder="Email" name="user" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Senha</label>
+                                         <input type="password" class="form-control" name="password" required>
+                                    </div>                                    
+                                </div>
+                                <div class="footer text-center">
+                                    <button type="submit" class="btn btn-fill btn-success btn-wd">Acessar</button>
+                                </div>
+                            </div>
+                                
+                        </form>
+                                
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer footer-transparent">
+            <div class="container">
+                <p class="copyright pull-right">
+                     &copy; 2016 <a href="https://www.facebook.com/Dev-622581617920261/" target="__blank">Dev</a> buscamos sempre evoluir
+                </p>
+            </div>
+        </footer>
+
+    </div>                             
+       
+</div>
+
+<script type="text/javascript">
+    $("[data-mask]").inputmask();
+            $().ready(function(){
+            lbd.checkFullPageBackgroundImage();
+            
+            setTimeout(function(){
+                // after 1000 ms we add the class animated to the login/register card
+                $('.card').removeClass('card-hidden');
+            }, 700)
+        });
+</script>
+{% endblock %}
