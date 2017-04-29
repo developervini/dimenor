@@ -7,7 +7,7 @@
 return array(
 
     'driver' => 'mysql',
-    'host' => 'mysql.hostiger.com',
+    'host' => 'mysql.hostiger.com.br',
     'database' => 'u276367261_data',
     'username' => 'u276367261_data',
     'password' => 'dimenor10',
