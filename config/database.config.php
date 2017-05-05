@@ -7,10 +7,10 @@
 return array(
 
     'driver' => 'mysql',
-    'host' => 'mysql.hostinger.com.br',
-    'database' => 'u276367261_data',
-    'username' => 'u276367261_data',
-    'password' => 'dimenor10',
+    'host' => 'localhost:3306',
+    'database' => 'dimenor',
+    'username' => 'root',
+    'password' => '',
     'prefix' => '',
     'charset' => 'utf8',
     'collation' => 'utf8_general_ci',

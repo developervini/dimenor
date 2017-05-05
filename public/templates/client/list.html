@@ -1,0 +1,91 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Clientes <a type="button" href="/client-new" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+					</div>
+					<div class="content">
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover display" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+										<th>Nome</th>
+										<th>Telefone</th>
+										<th>Facebook</th>
+										<th>Observações</th>
+										<th>Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for client in clients %}
+									<tr> 
+										<td>{{ client.client }}</td>
+										<td>{{ client.phone }}</td>
+										<td>{{ client.facebook }}</td>
+										<td>{{ client.observation }}</td>
+										<td>
+											<div class="btn-group">
+												{% if client.active == 0 %}
+						                        <button type="submit" onclick="deleteClient({{ client.id }}, 'remover')" title="Remover" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+						                        {% elseif client.active == 1 %}
+						                        <button type="submit" onclick="deleteClient({{ client.id }}, 'ativar')" title="Ativar" class="btn btn-warning btn-fill"><i class="fa fa-check"></i></button>
+						                        {% endif %}
+												<a type="button" href="/client-edit/{{ client.id }}" title="Editar" class="btn btn-info btn-fill"><i class="fa fa-pencil"></i></a>
+												<a type="button" href="/client-view/{{ client.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  function deleteClient(id, message)
+  {
+    swal({  title: "Deseja " + message + " o cliente?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },function(isConfirm){
+      if (isConfirm){
+        $.ajax({
+          type: "DELETE",
+          url: "/client-active/" + id,
+          success: function(data) {
+            data = JSON.parse(data);
+            swal({  title: data['msg'],
+              type: data['class'],
+              showCancelButton: false,
+              confirmButtonText: "Ok",
+              closeOnConfirm: false
+            },function(isConfirm){
+              if (isConfirm){
+                window.location.href = data['route'];
+              }
+            });
+
+            
+          }
+        });
+      }else{
+        swal("A tentantiva de " + message + " o cliente falhou.", "", "error");
+      }
+    });
+  }
+</script>
+{% endblock %}
