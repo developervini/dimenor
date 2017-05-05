@@ -28,3 +28,13 @@ $app->group('/site', 'auth', function() use ($app){
 	$app->get('-view/:id', 'viewSite');
 	$app->delete('-active/:id', 'activeSite');
 });
+
+$app->group('/client', 'auth', function() use ($app){
+	$app->get('-list', 'listClient');
+	$app->get('-new', 'newClient');
+	$app->post('-new', 'newClient');
+	$app->get('-edit/:id', 'editClient');
+	$app->put('-edit/:id', 'editClient');
+	$app->get('-view/:id', 'viewClient');
+	$app->delete('-active/:id', 'activeClient');
+});
