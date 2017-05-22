@@ -10,7 +10,7 @@ function listClient()
 function viewClient($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('client/view.html', array('client' => ClientController::findClient($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('client/view.html', array('client' => ClientController::findClient($id), 'sites' => ClientSiteController::listClientSite($id), 'users_sites' => ClientSiteUserController::listClientSiteUser($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newClient()

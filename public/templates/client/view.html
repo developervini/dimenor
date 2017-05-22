@@ -1,1 +1,57 @@
-view.html
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">{{ client.client }}</h4>
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="col-sm-12">
+						<h5>{{ client.phone }}</h5>
+						<h5>{{ client.facebook }}</h5>
+						<h5>{{ client.observation }}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Sites <a type="button" href="/client-site-new/{{ client.id }}" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+			</div>
+			<div class="content">
+				<div class="table-responsive">
+					<table class="table table-striped table-no-bordered table-hover display" cellspacing="0" width="100%" style="width:100%">
+						<thead>
+							<tr>
+								<th>Nome</th>
+								<th>Endereço</th>
+								<th>Observações</th></th>
+								<th>Usuários</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for site in sites %}
+							<tr> 
+								<td>{{ site.site }}</td>
+								<td>{{ site.address }}</td>
+								<td>{{ site.observation }}</td>
+								<td>
+								{% for user_client in users_sites %}
+									{% if user_client.site == site.id %}
+										{{ user_client.username }} <br>
+									{% endif %}
+								{% endfor %}
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
