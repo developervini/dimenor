@@ -38,3 +38,19 @@ $app->group('/client', 'auth', function() use ($app){
 	$app->get('-view/:id', 'viewClient');
 	$app->delete('-active/:id', 'activeClient');
 });
+
+$app->group('/client-site', 'auth', function() use ($app){
+	$app->get('-new/:id', 'newClientSite');
+	$app->post('-new/:id', 'newClientSite');
+	$app->delete('-active/:id', 'activeClientSite');
+});
+
+$app->group('/bank', 'auth', function() use ($app){
+	$app->get('-list', 'listBank');
+	$app->get('-new', 'newBank');
+	$app->post('-new', 'newBank');
+	$app->get('-edit/:id', 'editBank');
+	$app->put('-edit/:id', 'editBank');
+	$app->get('-view/:id', 'viewBank');
+	$app->delete('-active/:id', 'activeBank');
+});

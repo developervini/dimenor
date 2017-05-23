@@ -1,0 +1,85 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar vínculo entre Cliente e Site</h4>
+			</div>
+			<div class="content">
+				<form action="/client-site-new/{{ id }}" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Clientes</label>
+							<input type="hidden" name="client_id" value="{{ id }}">
+							<select class="form-control" name="client_id" disabled="true">
+								{% for client in clients %}
+									{% if client.id == id %}
+										<option value="{{ client.id }}" selected="true">{{ client.client }}</option>
+									{% else %}
+										<option value="{{ client.id }}">{{ client.client }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Usuários</label>
+							<select class="form-control" name="site_id">
+								{% for site in sites %}
+									{% if site.id == id %}
+										<option value="{{ site.id }}" selected="true">{{ site.site }}</option>
+									{% else %}
+										<option value="{{ site.id }}">{{ site.site }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="input_fields_wrap">   
+							    <div class="form-group">
+							    	<label>Usuários</label>
+							    	<input type="text" name="users[]" class="form-control">
+							    </div>
+							</div>
+						</div>
+						<div class="col-md-1 form-group">
+							<label>&nbsp</label>
+							<button class="add_field_button btn btn-fill btn-info"><i class="fa fa-plus"></i> Usuários</button>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/client-view/{{ id }}" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+    var max_fields      = 5; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+            x++; //text box increment
+            $(wrapper).append('<div class="input-group form-group"><input type="text" name="users[]" class="form-control"/><span class="input-group-addon remove_field"><a href="#" class="remove_field"><i class="fa fa-close"></i></a></span></div>'); //add input box
+    });
+    
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+});
+</script>
+
+{% endblock %}
