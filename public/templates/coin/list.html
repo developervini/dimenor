@@ -1,0 +1,87 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Moedas <a type="button" href="/coin-new" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+					</div>
+					<div class="content">
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover display" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+										<th>Moeda</th>
+										<th>Porcentagem</th>
+										<th>Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for coin in coins %}
+									<tr> 
+										<td>{{ coin.coin }}</td>
+										<td>% {{ coin.percentage }}</td>
+										<td>
+											<div class="btn-group">
+												{% if coin.active == 0 %}
+						                        <button type="submit" onclick="deleteCoin({{ coin.id }}, 'remover')" title="Remover" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+						                        {% elseif coin.active == 1 %}
+						                        <button type="submit" onclick="deleteCoin({{ coin.id }}, 'ativar')" title="Ativar" class="btn btn-warning btn-fill"><i class="fa fa-check"></i></button>
+						                        {% endif %}
+												<a type="button" href="/coin-edit/{{ coin.id }}" title="Editar" class="btn btn-info btn-fill"><i class="fa fa-pencil"></i></a>
+												<a type="button" href="/coin-view/{{ coin.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  function deleteCoin(id, message)
+  {
+    swal({  title: "Deseja " + message + " a moeda?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },function(isConfirm){
+      if (isConfirm){
+        $.ajax({
+          type: "DELETE",
+          url: "/coin-active/" + id,
+          success: function(data) {
+            data = JSON.parse(data);
+            swal({  title: data['msg'],
+              type: data['class'],
+              showCancelButton: false,
+              confirmButtonText: "Ok",
+              closeOnConfirm: false
+            },function(isConfirm){
+              if (isConfirm){
+                window.location.href = data['route'];
+              }
+            });
+
+            
+          }
+        });
+      }else{
+        swal("A tentantiva de " + message + " a moeda falhou.", "", "error");
+      }
+    });
+  }
+</script>
+{% endblock %}
