@@ -30,6 +30,20 @@ class AgreedSiteController
 		}
 	}
 
+	public static function listAgreedSiteJson($id)
+	{
+		try {	
+			return AgreedSite::join('agreed', 'agreed.id', '=', 'agreed_id')->where('site_id', $id)->select('agreed.*')->get();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error', 
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
 	public static function newAgreedSite($data = array())
 	{
 		try {

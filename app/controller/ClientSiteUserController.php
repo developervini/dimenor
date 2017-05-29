@@ -30,6 +30,20 @@ class ClientSiteUserController
 		}
 	}
 
+	public static function listClientSiteUserJson($id, $site)
+	{
+		try {	
+			return ClientSiteUser::join('client_site', 'client_site.id', '=', 'client_site_id')->where('client_site.client_id', $id)->where('client_site.site_id', $site)->select('client_site_user.*', 'client_site.site_id as site')->get();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error', 
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
 	public static function newClientSiteUser($data = array())
 	{
 		try {

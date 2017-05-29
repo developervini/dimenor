@@ -7,7 +7,7 @@ $app->get('/login', 'loginUser');
 $app->post('/login', 'loginUser');
 $app->get('/logout', 'logoutUser');
 
-$app->get('/dashboard', 'auth', 'listUser');
+$app->get('/dashboard', 'auth', 'dashboard');
 
 $app->group('/user', 'auth', function() use ($app){
 	$app->get('-list', 'listUser');
@@ -40,12 +40,18 @@ $app->group('/client', 'auth', function() use ($app){
 });
 
 $app->group('/client-site', 'auth', function() use ($app){
+	$app->get('-list-json/:id', 'listClientSiteJson');
 	$app->get('-new/:id', 'newClientSite');
 	$app->post('-new/:id', 'newClientSite');
 	$app->delete('-active/:id', 'activeClientSite');
 });
 
+$app->group('/client-site-user', 'auth', function() use ($app){
+	$app->get('-list-json/:id/:site', 'listClientSiteUserJson');
+});
+
 $app->group('/agreed-site', 'auth', function() use ($app){
+	$app->get('-list-json/:id', 'listAgreedSiteJson');
 	$app->get('-new/:id', 'newAgreedSite');
 	$app->post('-new/:id', 'newAgreedSite');
 	$app->delete('-active/:id', 'activeAgreedSite');
