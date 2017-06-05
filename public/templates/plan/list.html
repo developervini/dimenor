@@ -1,0 +1,85 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Plano de Contas <a type="button" href="/plan-new" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+					</div>
+					<div class="content">
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover display" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+										<th>Plano de Conta</th>
+										<th>Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for plan in plans %}
+									<tr> 
+										<td>{{ plan.plan }}</td>
+										<td>
+											<div class="btn-group">
+												{% if plan.active == 0 %}
+						                        <button type="submit" onclick="deleteplan({{ plan.id }}, 'remover')" title="Remover" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+						                        {% elseif plan.active == 1 %}
+						                        <button type="submit" onclick="deleteplan({{ plan.id }}, 'ativar')" title="Ativar" class="btn btn-warning btn-fill"><i class="fa fa-check"></i></button>
+						                        {% endif %}
+												<a type="button" href="/plan-edit/{{ plan.id }}" title="Editar" class="btn btn-info btn-fill"><i class="fa fa-pencil"></i></a>
+												<a type="button" href="/plan-view/{{ plan.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  function deleteplan(id, message)
+  {
+    swal({  title: "Deseja " + message + " a Plano de Conta?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },function(isConfirm){
+      if (isConfirm){
+        $.ajax({
+          type: "DELETE",
+          url: "/plan-active/" + id,
+          success: function(data) {
+            data = JSON.parse(data);
+            swal({  title: data['msg'],
+              type: data['class'],
+              showCancelButton: false,
+              confirmButtonText: "Ok",
+              closeOnConfirm: false
+            },function(isConfirm){
+              if (isConfirm){
+                window.location.href = data['route'];
+              }
+            });
+
+            
+          }
+        });
+      }else{
+        swal("A tentantiva de " + message + " a Plano de Conta falhou.", "", "error");
+      }
+    });
+  }
+</script>
+{% endblock %}

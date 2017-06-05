@@ -87,6 +87,17 @@ $app->group('/coin', 'auth', function() use ($app){
 	$app->delete('-active/:id', 'activeCoin');
 });
 
+$app->group('/plan', 'auth', function() use ($app){
+	$app->get('-list', 'listPlan');
+	$app->get('-new', 'newPlan');
+	$app->post('-new', 'newPlan');
+	$app->get('-edit/:id', 'editPlan');
+	$app->put('-edit/:id', 'editPlan');
+	$app->get('-view/:id', 'viewPlan');
+	$app->delete('-active/:id', 'activePlan');
+});
+
+
 $app->group('/sale', 'auth', function() use ($app){
 	$app->get('-list', 'listSale');
 	$app->get('-new', 'newSale');

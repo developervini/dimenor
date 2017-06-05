@@ -1,0 +1,30 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar Plano de Conta</h4>
+			</div>
+			<div class="content">
+				<form action="/plan-new" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Plano de Conta</label>
+							<input type="text" name="plan" class="form-control" required>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/plan-list" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

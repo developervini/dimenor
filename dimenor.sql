@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28-Maio-2017 às 17:31
--- Versão do servidor: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: 05-Jun-2017 às 05:34
+-- Versão do servidor: 10.1.22-MariaDB
+-- PHP Version: 7.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -181,6 +183,27 @@ INSERT INTO `coin` (`id`, `coin`, `percentage`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `plan`
+--
+
+CREATE TABLE `plan` (
+  `id` int(11) NOT NULL,
+  `plan` varchar(100) NOT NULL,
+  `active` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `plan`
+--
+
+INSERT INTO `plan` (`id`, `plan`, `active`) VALUES
+(1, 'Receita ', 0),
+(2, 'Insumos escritório', 0),
+(3, 'Insumos higiênicos', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `sale`
 --
 
@@ -197,6 +220,17 @@ CREATE TABLE `sale` (
   `bank_id` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `sale`
+--
+
+INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `total`, `bank_id`, `status`) VALUES
+(1, 11, 1, 100, 2.00, 200.00, 0, '2017-05-28', 200.00, 1, 0),
+(2, 11, 1, 1000, 1.55, 1550.00, 0, '2017-05-27', 1550.00, 1, 1),
+(3, 11, 1, 100, 5.00, 500.00, 0, '2017-05-28', 500.00, 1, 1),
+(4, 11, 1, 100, 2.54, 254.00, 0, '2017-05-27', 254.00, 1, 0),
+(5, 11, 1, 100, 2.54, 254.00, 0, '2017-05-16', 254.00, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -296,6 +330,12 @@ ALTER TABLE `coin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `plan`
+--
+ALTER TABLE `plan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sale`
 --
 ALTER TABLE `sale`
@@ -355,10 +395,15 @@ ALTER TABLE `client_site_user`
 ALTER TABLE `coin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `plan`
+--
+ALTER TABLE `plan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `site`
 --
@@ -398,6 +443,7 @@ ALTER TABLE `client_site`
 --
 ALTER TABLE `client_site_user`
   ADD CONSTRAINT `client_site_user_ibfk_1` FOREIGN KEY (`client_site_id`) REFERENCES `client_site` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
