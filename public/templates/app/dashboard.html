@@ -6,12 +6,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
-					<div class="header">
-						Vendas
-						<p class="category">{{ "now"|date("M") }}</p>
-					</div>
 					<div class="content">
-						<div id="chartSales" class="ct-chart "></div>
+						<div id="container"></div>
 					</div>
 				</div>
 			</div>
@@ -19,44 +15,79 @@
 	</div>
 </div>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript">
 
-	function initChartSales()
-	{
-		var data = {{ sales|raw }};
-		var labels = [];
-		var series = [];
+	var data = {{ sales|raw }};
+	var labels = {};
+	var series_f = {};
+	var series_p = {};
 
-		$(data).each(function(index, obj) {
-			labels.push(obj.label);
-			series.push(obj.data);
-		});
 
-		var dataStock = {labels: labels, series: [series]};
+	$(data).each(function(index, obj) {
+		labels[obj.label] = 'Dia ' + obj.label;
 
-		var optionsSales = {
-			lineSmooth: false,
-			axisY: {
-				offset: 70,
-				labelInterpolationFnc: function(value) {
-					return 'R$ ' + value;
-				}
+		if(obj.status == 0){
+			series_p[obj.label] = obj.data;
+		}else{
+			series_f[obj.label] = obj.data;
+		}
+
+		if(!(obj.label in series_f)){
+			series_f[obj.label] = null;
+		}
+		if(!(obj.label in series_p)){
+			series_p[obj.label] = null;
+		}
+	});
+
+	var labels = Object.keys(labels).map(function (key) { return labels[key]; });
+	var series_p = Object.keys(series_p).map(function (key) { return series_p[key]; });
+	var series_f = Object.keys(series_f).map(function (key) { return series_f[key]; });
+
+	console.log(labels);
+	console.log(series_p);
+	console.log(series_f);
+
+	Highcharts.chart('container', {
+
+		title: {
+			text: 'Vendas'
+		},
+
+		subtitle: {
+			text: '{{ "now"|date("M") }}'
+		},
+		xAxis: {
+			categories: labels
+		},
+
+		yAxis: {
+			title: {
+				text: 'Total'
 			},
-			axisX: {
-				labelInterpolationFnc: function(value) {
-					return 'Dia ' + value;
+			labels: {
+				formatter: function () {
+					return 'R$ ' + this.value;
 				}
-			},
-			classNames: {
-				point: 'ct-point ct-green',
-				line: 'ct-line ct-green'
 			}
-		};
+		},
+		tooltip: {
+			crosshairs: true,
+			shared: true
+		},
+		series: [{
+			name: 'Faturado',
+			color: 'green',
+			data: series_f
+		}, {
+			name: 'Pendente',
+			color: 'red',
+			data: series_p
+		}]
 
-		Chartist.Line('#chartSales', dataStock, optionsSales);
-	}
-
-	initChartSales();
+	});
 
 
 </script>
