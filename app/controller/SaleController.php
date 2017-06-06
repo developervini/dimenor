@@ -33,7 +33,7 @@ class SaleController
 	public static function listSaleChartLine()
 	{
 		try {	
-			return Sale::selectRaw('DAY(date) as label, SUM(total) as data, status')->whereMonth('date', '=',date('m'))->whereYear('date', '=',date('Y'))->groupBy('date')->orderBy('date', 'ASC')->get()->toJson();
+			return Sale::selectRaw('DAY(date) as label, SUM(total) as data, status')->whereMonth('date', '=',date('m'))->whereYear('date', '=',date('Y'))->groupBy('date', 'status')->orderBy('date', 'ASC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
