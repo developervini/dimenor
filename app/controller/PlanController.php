@@ -35,6 +35,7 @@ class PlanController
 		try {
 			$Plan = new Plan();
 			$Plan->plan = $data['plan'];
+			$Plan->operation = $data['operation'];
 			$Plan->save();
 
 			$data = array(
@@ -59,6 +60,7 @@ class PlanController
 		try {
 			$Plan = Plan::find($data['id']);
 			$Plan->plan = $data['plan'];
+			$Plan->operation = $data['operation'];
 			$Plan->save();
 
 			$data = array(

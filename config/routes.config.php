@@ -77,6 +77,17 @@ $app->group('/bank', 'auth', function() use ($app){
 	$app->delete('-active/:id', 'activeBank');
 });
 
+$app->group('/outlay', 'auth', function() use ($app){
+	$app->get('-list', 'listOutlay');
+	$app->get('-new', 'newOutlay');
+	$app->post('-new', 'newOutlay');
+	$app->get('-edit/:id', 'editOutlay');
+	$app->put('-edit/:id', 'editOutlay');
+	$app->get('-view/:id', 'viewOutlay');
+	$app->delete('-active/:id', 'activeOutlay');
+});
+
+
 $app->group('/coin', 'auth', function() use ($app){
 	$app->get('-list', 'listCoin');
 	$app->get('-new', 'newCoin');
