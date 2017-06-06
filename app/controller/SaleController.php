@@ -19,7 +19,7 @@ class SaleController
 	public static function listSale()
 	{
 		try {	
-			return Sale::orderBy('date', 'DESC')->get();
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -33,7 +33,7 @@ class SaleController
 	public static function listSaleChartLine()
 	{
 		try {	
-			return Sale::selectRaw('DAY(date) as label, SUM(total) as data, status')->whereMonth('date', '=',date('m'))->whereYear('date', '=',date('Y'))->groupBy('date', 'status')->orderBy('date', 'ASC')->get();
+			return Sale::selectRaw('DAY(date) as label, SUM(total) as data, status')->whereMonth('date', '=',date('m'))->whereYear('date', '=',date('Y'))->groupBy('date')->orderBy('date', 'ASC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),

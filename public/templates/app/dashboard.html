@@ -7,16 +7,11 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="header">
-						VENDAS
-						<p class="category">MAIO</p>
+						Vendas
+						<p class="category">{{ "now"|date("M") }}</p>
 					</div>
 					<div class="content">
 						<div id="chartSales" class="ct-chart "></div>
-					</div>
-					<div class="footer">
-						<h6>Legenda</h6>
-						<i class="fa fa-circle text-info"></i> Faturado
-						<i class="fa fa-circle text-danger"></i> Pendente
 					</div>
 				</div>
 			</div>
@@ -30,28 +25,33 @@
 	{
 		var data = {{ sales|raw }};
 		var labels = [];
-		var series_p = [];
-		var series_f = [];
+		var series = [];
 		$(data).each(function(index, obj) {
 			if (!labels.includes(obj.label))
 				labels.push(obj.label);
-			if(obj.status == 0)
-				series_p.push(obj.data);
-			else
-				series_f.push(obj.data);
+			series.push(obj.data);
 		});
 
-		var dataStock = {labels, series: [series_f, series_p]};
+		var dataStock = {labels, series: [series]};
 
-        var optionsSales = {
-          lineSmooth: false,
-          classNames: {
-            seriesA: {
-            	point: 'ct-point ct-green',
-            	line: 'ct-line ct-green'
-          	}
-          }
-        };
+		var optionsSales = {
+			lineSmooth: false,
+			axisY: {
+				offset: 70,
+				labelInterpolationFnc: function(value) {
+					return 'R$ ' + value;
+				}
+			},
+			axisX: {
+				labelInterpolationFnc: function(value) {
+					return 'Dia ' + value;
+				}
+			},
+			classNames: {
+				point: 'ct-point ct-green',
+				line: 'ct-line ct-green'
+			}
+		};
 
 		Chartist.Line('#chartSales', dataStock, optionsSales);
 	}
