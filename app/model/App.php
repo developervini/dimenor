@@ -8,9 +8,9 @@ class App {
 
     public static function version()
     {
-        $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
+        $commitHash = trim(shell_exec('git log --pretty="%h" -n1 HEAD'));
 
-        $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
+        $commitDate = new \DateTime(trim(shell_exec('git log -n1 --pretty=%ci HEAD')));
         $commitDate->setTimezone(new \DateTimeZone('UTC'));
 
         return sprintf('v%s.%s.%s.%s %s', self::MAJOR, self::MINOR, self::PATCH, $commitHash, $commitDate->format('Y'));

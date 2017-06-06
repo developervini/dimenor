@@ -27,8 +27,7 @@
 		var labels = [];
 		var series = [];
 		$(data).each(function(index, obj) {
-			if (!labels.includes(obj.label))
-				labels.push(obj.label);
+			labels.push(parseInt(obj.label));
 			series.push(obj.data);
 		});
 
