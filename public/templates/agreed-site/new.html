@@ -1,0 +1,51 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar vínculo entre Conveniado e Site</h4>
+			</div>
+			<div class="content">
+				<form action="/agreed-site-new/{{ id }}" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Conveniado</label>
+							<input type="hidden" name="agreed_id" value="{{ id }}">
+							<select class="form-control" name="agreed_id" disabled="true">
+								{% for agreed in agreeds %}
+									{% if agreed.id == id %}
+										<option value="{{ agreed.id }}" selected="true">{{ agreed.agreed }}</option>
+									{% else %}
+										<option value="{{ agreed.id }}">{{ agreed.agreed }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Sites</label>
+							<select class="form-control" name="site_id">
+								{% for site in sites %}
+									{% if site.id == id %}
+										<option value="{{ site.id }}" selected="true">{{ site.site }}</option>
+									{% else %}
+										<option value="{{ site.id }}">{{ site.site }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/agreed-view/{{ id }}" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

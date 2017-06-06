@@ -1,0 +1,60 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Editar Conveniado</h4>
+			</div>
+			<div class="content">
+				<form action="/agreed-edit/{{ agreed.id }}" method="POST" id="registerFormValidation">
+					<input type="hidden" name="_METHOD" value="PUT"/>
+					<input type="hidden" name="id" value="{{ agreed.id }}"/>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Empresa</label>
+							<input type="text" name="agreed" value="{{ agreed.agreed }}" class="form-control" required>
+						</div>
+						<div class="col-md-3 form-group">
+							<label>Telefone</label>
+							<input type="text" name="phone" value="{{ agreed.phone }}" class="form-control" data-inputmask='"mask":"(99) 99999-9999"' data-mask>
+						</div>
+						<div class="col-md-3 form-group">
+							<label>Facebook</label>
+							<input type="url" name="facebook" value="{{ agreed.facebook }}" class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Moeda</label>
+							<select class="form-control" name="coin_id">
+								{% for coin in coins %}
+									{% coin.id == agreed.coin_id %}
+										<option value="{{ coin.id }}" selected="true">{{ coin.coin }} - % {{ coin.percentage }}</option>
+									{% else %}
+										<option value="{{ coin.id }}">{{ coin.coin }} - % {{ coin.percentage }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Observações</label>
+							<textarea class="form-control" name="observation" rows="5">{{ agreed.observation }}</textarea>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/agreed-list" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

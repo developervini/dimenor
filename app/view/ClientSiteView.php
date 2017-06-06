@@ -1,6 +1,11 @@
 <?php
 use \Slim\Slim as Slim;
 
+function listClientSiteJson($id = int)
+{
+	echo ClientSiteController::listClientSite($id);
+}
+
 function newClientSite($id = int)
 {
 	$app = Slim::getInstance();

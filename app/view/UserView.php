@@ -52,6 +52,7 @@ function loginUser()
 		$return = UserController::loginUser($app->request()->params());
 		if (!empty($return)) {
 			$_SESSION['user_logged'] = $return;
+			$_SESSION['user_logged']->version = App::version();
 			$app->redirect('/dashboard');
 		}else {
 			$app->redirect('/login');

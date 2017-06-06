@@ -1,0 +1,64 @@
+{% extends "menu.html" %}
+
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						VENDAS
+						<p class="category">MAIO</p>
+					</div>
+					<div class="content">
+						<div id="chartSales" class="ct-chart "></div>
+					</div>
+					<div class="footer">
+						<h6>Legenda</h6>
+						<i class="fa fa-circle text-info"></i> Faturado
+						<i class="fa fa-circle text-danger"></i> Pendente
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	function initChartSales()
+	{
+		var data = {{ sales|raw }};
+		var labels = [];
+		var series_p = [];
+		var series_f = [];
+		$(data).each(function(index, obj) {
+			if (!labels.includes(obj.label))
+				labels.push(obj.label);
+			if(obj.status == 0)
+				series_p.push(obj.data);
+			else
+				series_f.push(obj.data);
+		});
+
+		var dataStock = {labels, series: [series_f, series_p]};
+
+        var optionsSales = {
+          lineSmooth: false,
+          classNames: {
+            seriesA: {
+            	point: 'ct-point ct-green',
+            	line: 'ct-line ct-green'
+          	}
+          }
+        };
+
+		Chartist.Line('#chartSales', dataStock, optionsSales);
+	}
+
+	initChartSales();
+
+
+</script>
+
+{% endblock %}

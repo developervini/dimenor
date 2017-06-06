@@ -1,0 +1,172 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+	<div class="container-fluid">
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Cadastrar Venda</h4>
+			</div>
+			<div class="content">
+				<form action="/sale-new" method="POST" id="registerFormValidation">
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<label>Clientes</label>
+							<select class="form-control" name="client_id" id="client_id" onchange="listClientSite();" required="true">
+								{% for client in clients %}
+								<option value="{{ client.id }}">{{ client.client }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-4 form-group">
+							<label>Sites do Cliente</label>
+							<select class="form-control" name="site_id" id="site_id" onchange="listClientSiteUser();" required="true">
+							</select>
+						</div>
+						<div class="col-md-4 form-group">
+							<label>Nicks do Site</label>
+							<select class="form-control" name="client_site_user_id" id="client_site_user_id" required="true">
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>Conveniados para o Site</label>
+							<select class="form-control" name="agreed_id" id="agreed_id" required="true">
+							</select>
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Quantidade de Fichas</label>
+							<input type="number" name="poker_chip" id="poker_chip" class="form-control" onchange="pokerChipTotal();" required="true">
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Preço da Ficha</label>
+							<input type="number" name="poker_chip_value" id="poker_chip_value" class="form-control" onchange="pokerChipTotal();" required="true">
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Total de Fichas</label>
+							<input type="text" name="poker_chip_total" id="poker_chip_total" class="form-control" required="true" readonly="true">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 form-group">
+							<label>Pagamento</label>
+							<label class="radio">
+								<span class="icons"><span class="first-icon fa fa-circle-o"></span><span class="second-icon fa fa-dot-circle-o"></span></span><input type="radio" data-toggle="radio" name="pay" value="0" checked="true">A VISTA
+							</label>
+							<label class="radio">
+								<span class="icons"><span class="first-icon fa fa-circle-o"></span><span class="second-icon fa fa-dot-circle-o"></span></span><input type="radio" data-toggle="radio" name="pay" value="1">A PRAZO
+							</label>
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Data</label>
+							<input type="date" name="date" class="form-control" required="true">
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Valor</label>
+							<input type="number" name="total" class="form-control" required="true">
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Conta</label>
+							<select class="form-control" name="bank_id" required="true">
+								{% for bank in banks %}
+								<option value="{{ bank.id }}">{{ bank.bank }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-2 form-group">
+							<label>Situação</label>
+							<select class="form-control" name="status" required="true">
+								<option value="0">Pendente</option>
+								<option value="1">Faturado</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+								<a href="/sale-list" class="btn btn-fill btn-danger">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function listClientSite() {
+		var id = $( "select#client_id option:selected" ).val();
+		$.ajax({
+			type: "GET",
+			url: "/client-site-list-json/" + id,
+			success: function(data) {
+				data = JSON.parse(data);
+		        var sites = $('#site_id');
+		        sites.empty();
+		        $(data).each(function () {
+		        	sites.append(
+		        		$('<option />', {
+		        			value: this.id
+		        		}).html(this.site)
+		        		);
+		        });
+		        listClientSiteUser();
+		        listAgreed();
+		    }
+		});
+	}
+
+	function listClientSiteUser() {
+		var id = $( "select#client_id option:selected" ).val();
+		var site = $( "select#site_id option:selected" ).val();
+		$.ajax({
+			type: "GET",
+			url: "/client-site-user-list-json/" + id + '/' + site,
+			success: function(data) {
+				data = JSON.parse(data);
+		        var users_site = $('#client_site_user_id');
+		        users_site.empty();
+		        $(data).each(function () {
+		        	users_site.append(
+		        		$('<option />', {
+		        			value: this.id
+		        		}).html(this.username)
+		        		);
+		        });
+		        listAgreed();
+		    }
+		});
+	}
+
+	function listAgreed() {
+		var id = $( "select#site_id option:selected" ).val();
+		$.ajax({
+			type: "GET",
+			url: "/agreed-site-list-json/" + id,
+			success: function(data) {
+				data = JSON.parse(data);
+		        var agreeds = $('#agreed_id');
+		        agreeds.empty();
+		        $(data).each(function () {
+		        	agreeds.append(
+		        		$('<option />', {
+		        			value: this.id
+		        		}).html(this.agreed)
+		        		);
+		        });
+		    }
+		});
+	}
+
+	function pokerChipTotal(){
+		var poker_chip = $( "input#poker_chip").val();
+		var poker_chip_value = $( "input#poker_chip_value").val();
+		$( "input#poker_chip_total").prop('value', (poker_chip*poker_chip_value));
+	}
+
+	listClientSite();
+</script>
+
+{% endblock %}
