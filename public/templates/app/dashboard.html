@@ -27,11 +27,11 @@
 		var labels = [];
 		var series = [];
 		$(data).each(function(index, obj) {
-			labels.push(parseInt(obj.label));
+			labels.push(obj.label);
 			series.push(obj.data);
 		});
 
-		var dataStock = {labels, series: [series]};
+		var dataStock = {labels: labels, series: [series]};
 
 		var optionsSales = {
 			lineSmooth: false,
