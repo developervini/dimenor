@@ -15,6 +15,7 @@
 								<thead>
 									<tr>
 										<th>Situação</th>
+										<th>Data</th>
 										<th>Cliente</th>
 										<th>Fichas</th>
 										<th>Valor</th>
@@ -31,6 +32,7 @@
 											<span class="label label-success">Faturado</span>
 											{% endif %}
 										</td>
+										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>{{ sale.client }}</td>
 										<td>{{ sale.poker_chip }}</td>
 										<td>{{ sale.total }}</td>
