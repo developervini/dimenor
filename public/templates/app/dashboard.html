@@ -28,8 +28,8 @@
 		var series = [];
 
 		$(data).each(function(index, obj) {
-			labels.push(parseInt(obj.label));
-			series.push(parseInt(obj.data));
+			labels.push(obj.label);
+			series.push(obj.data);
 		});
 
 		var dataStock = {labels: labels, series: [series]};
