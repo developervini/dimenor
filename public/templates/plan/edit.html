@@ -4,27 +4,35 @@
 	<div class="container-fluid">
 		<div class="card">
 			<div class="header">
-				<h4 class="title">Editar Moeda</h4>
+				<h4 class="title">Editar Plano de Conta</h4>
 			</div>
 			<div class="content">
-				<form action="/coin-edit/{{ coin.id }}" method="POST" id="registerFormValidation">
+				<form action="/plan-edit/{{ plan.id }}" method="POST" id="registerFormValidation">
 					<input type="hidden" name="_METHOD" value="PUT"/>
-					<input type="hidden" name="id" value="{{ coin.id }}"/>
+					<input type="hidden" name="id" value="{{ plan.id }}"/>
 					<div class="row">
-						<div class="col-md-3 form-group">
-							<label>Moeda</label>
-							<input type="text" name="coin" value="{{ coin.coin }}" class="form-control" required>
+						<div class="col-md-6 form-group">
+							<label>Plano de Conta</label>
+							<input type="text" name="plan" value="{{ plan.plan }}" class="form-control" required>
 						</div>
-						<div class="col-md-3 form-group">
-							<label>Porcentagem</label>
-							<input type="number" name="percentage" value="{{ coin.percentage }}" class="form-control" required>
+						<div class="col-md-1 form-group">
+							<label>Operação</label>
+							<select class="form-control" name="operation" required>
+								{% if plan.operation == '+' %}
+									<option value="+" selected="true">+</option>
+									<option value="-">-</option>
+								{% else %}
+									<option value="+">+</option>
+									<option value="-" selected="true">-</option>
+								{% endif %}
+							</select>
 						</div>
 					</div>
 					<div class="row">	
 						<div class="col-md-12">
 							<div class="form-group pull-right">
 								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
-								<a href="/coin-list" class="btn btn-fill btn-danger">Cancelar</a>
+								<a href="/plan-list" class="btn btn-fill btn-danger">Cancelar</a>
 							</div>
 						</div>
 					</div>

@@ -4,29 +4,49 @@
 	<div class="container-fluid">
 		<div class="card">
 			<div class="header">
-				<h4 class="title">Cadastrar Conta Bancária</h4>
+				<h4 class="title">Cadastrar Fluxo</h4>
 			</div>
 			<div class="content">
-				<form action="/bank-new" method="POST" id="registerFormValidation">
+				<form action="/outlay-new" method="POST" id="registerFormValidation">
 					<div class="row">
 						<div class="col-md-6 form-group">
+							<label>Descrição</label>
+							<textarea name="outlay" rows="3" class="form-control" required></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 form-group">
+							<label>Data do Extrato</label>
+							<input type="date" name="date_extract" class="form-control">
+						</div>
+						<div class="col-md-3 form-group">
+							<label>Plano de Conta</label>
+							<select class="form-control" name="plan_id" required="true">
+								{% for plan in plans %}
+									<option value="{{ plan.id }}">{{ plan.plan }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 form-group">
 							<label>Banco</label>
-							<input type="text" name="bank" class="form-control" required>
+							<select class="form-control" name="bank_id" required="true">
+								{% for bank in banks %}
+									<option value="{{ bank.id }}">{{ bank.bank }}</option>
+								{% endfor %}
+							</select>
 						</div>
 						<div class="col-md-3 form-group">
-							<label>Agência/Conta</label>
-							<input type="text" name="account" class="form-control" required>
-						</div>
-						<div class="col-md-3 form-group">
-							<label>Saldo atual</label>
-							<input type="number" name="balance" class="form-control">
+							<label>Valor</label>
+							<input type="number" name="total" class="form-control" required="true">
 						</div>
 					</div>
 					<div class="row">	
 						<div class="col-md-12">
 							<div class="form-group pull-right">
 								<button type="submit" class="btn btn-fill btn-success">Salvar</button>
-								<a href="/bank-list" class="btn btn-fill btn-danger">Cancelar</a>
+								<a href="/outlay-list" class="btn btn-fill btn-danger">Cancelar</a>
 							</div>
 						</div>
 					</div>

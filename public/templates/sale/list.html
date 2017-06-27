@@ -19,7 +19,7 @@
 										<th>Cliente</th>
 										<th>Fichas</th>
 										<th>Valor</th>
-										<th>Ações</th>
+										<!-- <th>Ações</th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -35,13 +35,13 @@
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>{{ sale.client }}</td>
 										<td>{{ sale.poker_chip }}</td>
-										<td>{{ sale.total }}</td>
-										<td>
+										<td>R$ {{ sale.total }}</td>
+<!-- 										<td>
 											<div class="btn-group">
 												<a type="button" href="/sale-edit/{{ sale.id }}" title="Editar" class="btn btn-info btn-fill"><i class="fa fa-pencil"></i></a>
 												<a type="button" href="/sale-view/{{ sale.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
 											</div>
-										</td>
+										</td> -->
 									</tr>
 									{% endfor %}
 								</tbody>

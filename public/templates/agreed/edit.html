@@ -25,17 +25,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6 form-group">
-							<label>Moeda</label>
-							<select class="form-control" name="coin_id">
-								{% for coin in coins %}
-									{% coin.id == agreed.coin_id %}
-										<option value="{{ coin.id }}" selected="true">{{ coin.coin }} - % {{ coin.percentage }}</option>
-									{% else %}
-										<option value="{{ coin.id }}">{{ coin.coin }} - % {{ coin.percentage }}</option>
-									{% endif %}
-								{% endfor %}
-							</select>
+						<div class="col-md-3 form-group">
+							<label>Saldo</label>
+							<input type="number" name="balance" value="{{ agreed.balance }}" class="form-control">
 						</div>
 					</div>
 					<div class="row">
