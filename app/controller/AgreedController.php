@@ -38,7 +38,7 @@ class AgreedController
 			$Agreed->balance = $data['balance'];
 			$Agreed->phone = $data['phone'];
 			$Agreed->facebook = $data['facebook'];
-			$Agreed->coin_id = $data['coin_id'];
+			$Agreed->coin_id = 1;
 			$Agreed->observation = $data['observation'];
 			$Agreed->save();
 
@@ -64,10 +64,10 @@ class AgreedController
 		try {
 			$Agreed = Agreed::find($data['id']);
 			$Agreed->agreed = $data['agreed'];
-			$Agreed->balance = $data['balance'];
+			//$Agreed->balance = $data['balance'];
 			$Agreed->phone = $data['phone'];
 			$Agreed->facebook = $data['facebook'];
-			$Agreed->coin_id = $data['coin_id'];
+			//$Agreed->coin_id = $data['coin_id'];
 			$Agreed->observation = $data['observation'];
 			$Agreed->save();
 

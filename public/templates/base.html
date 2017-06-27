@@ -124,6 +124,29 @@
                     }
                 }
             } );
+            $('table.displaynosearch').dataTable( {
+                "pageLength": 30,
+                "paging": true,
+                "lengthChange": false,
+                "info": true,
+                "autoWidth": false,
+                "searching": false,
+                "sorting": false,
+                "language": {
+                    "lengthMenu": "Exibir _MENU_",
+                    "zeroRecords": "Não foram encontrados registros",
+                    "info": "Exibindo página _PAGE_ de _PAGES_ com _MAX_ registros",
+                    "infoEmpty": "Sem registros",
+                    "infoFiltered": "(Filtrado de _MAX_ registros)",
+                    "search": "Pesquisar ",
+                    "paginate": {
+                        "sFirst":    "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext":     "Seguinte",
+                        "sLast":     "Último"
+                    }
+                }
+            } );
             $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
                 checkboxClass: 'icheckbox_flat-green'
             });

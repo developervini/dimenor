@@ -4,13 +4,13 @@ use \Slim\Slim as Slim;
 function listBank()
 {
 	$app = Slim::getInstance();
-	$app->render('bank/list.html', array('banks' => BankController::listBank(), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('bank/list.html', array('banks' => BankController::listBank(), 'totalSale' => SaleController::getTotalSale(), 'totalOutlay' => OutlayController::getTotalOutlay(), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function viewBank($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('bank/view.html', array('bank' => BankController::findBank($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('bank/view.html', array('bank' => BankController::findBank($id), 'sales' => SaleController::listSaleBank($id), 'outlays' => OutlayController::listOutlayBank($id), 'totalSale' => SaleController::getTotalSaleBank($id), 'totalOutlay' => OutlayController::getTotalOutlayBank($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newBank()

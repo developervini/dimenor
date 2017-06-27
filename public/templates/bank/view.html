@@ -11,7 +11,103 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h5>{{ bank.account }}</h5>
-						<h5>R$ {{ bank.balance }}</h5>
+						{% set total = 0 %}
+						{% for outlay in totalOutlay %}
+							{% if outlay.operation == '+' %}
+								{% set total = total + outlay.total %}
+							{% else %}
+								{% set total = total + (-outlay.total) %}
+							{% endif %}
+						{% endfor %}
+						<h5>R$ {{ bank.balance + totalSale.total + total }}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Vendas Finalizadas</h4>
+					</div>
+					<div class="content">
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover displaynosearch" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+										<th>Situação</th>
+										<th>Data</th>
+										<th>Cliente</th>
+										<th>Fichas</th>
+										<th>Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for sale in sales %}
+									<tr> 
+										<td>
+											{% if sale.status == 0 %}
+											<span class="label label-danger">Pendente</span>
+											{% else %}
+											<span class="label label-success">Faturado</span>
+											{% endif %}
+										</td>
+										<td>{{ sale.date|date('d/m/Y') }}</td>
+										<td>{{ sale.client }}</td>
+										<td>{{ sale.poker_chip }}</td>
+										<td>R$ {{ sale.total }}</td>
+									</tr>
+									{% endfor %}
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>TOTAL</td>
+										<td>R$ {{ totalSale.total }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Fluxo do Caixa</h4>
+					</div>
+					<div class="content">
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover displaynosearch" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+									<tr>
+										<th>Descrição</th>
+										<th>Plano de Conta</th>
+										<th>Banco</th>
+										<th>Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for outlay in outlays %}
+									<tr> 
+										<td>{{ outlay.outlay }}</td>
+										<td>{{ outlay.plan }}</td>
+										<td>{{ outlay.account }}</td>
+										<td>R$ {{ outlay.operation }} {{ outlay.total }}</td>
+									</tr>
+									{% endfor %}
+									<tr>
+										<td></td>
+										<td></td>
+										<td>TOTAL</td>
+										<td>R$ {{ total }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
