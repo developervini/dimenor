@@ -19,7 +19,7 @@
 										<th>Cliente</th>
 										<th>Fichas</th>
 										<th>Valor</th>
-										<!-- <th>Ações</th> -->
+										<th>Ações</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -36,12 +36,15 @@
 										<td>{{ sale.client }}</td>
 										<td>{{ sale.poker_chip }}</td>
 										<td>R$ {{ sale.total }}</td>
-<!-- 										<td>
+										<td>
 											<div class="btn-group">
-												<a type="button" href="/sale-edit/{{ sale.id }}" title="Editar" class="btn btn-info btn-fill"><i class="fa fa-pencil"></i></a>
-												<a type="button" href="/sale-view/{{ sale.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
+												{% if sale.status == 1 %}
+						                        <button type="submit" onclick="statusSale({{ sale.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+						                        {% elseif sale.status == 0 %}
+						                        <button type="submit" onclick="statusSale({{ sale.id }}, 'faturar')" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></button>
+						                        {% endif %}
 											</div>
-										</td> -->
+										</td>
 									</tr>
 									{% endfor %}
 								</tbody>
@@ -53,4 +56,42 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+  function statusSale(id, message)
+  {
+    swal({  title: "Deseja " + message + " a venda?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },function(isConfirm){
+      if (isConfirm){
+        $.ajax({
+          type: "PUT",
+          url: "/sale-status/" + id,
+          success: function(data) {
+            data = JSON.parse(data);
+            swal({  title: data['msg'],
+              type: data['class'],
+              showCancelButton: false,
+              confirmButtonText: "Ok",
+              closeOnConfirm: false
+            },function(isConfirm){
+              if (isConfirm){
+                window.location.href = data['route'];
+              }
+            });
+
+            
+          }
+        });
+      }else{
+        swal("A tentantiva de " + message + " a venda falhou.", "", "error");
+      }
+    });
+  }
+</script>
 {% endblock %}

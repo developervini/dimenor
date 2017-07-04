@@ -116,5 +116,5 @@ $app->group('/sale', 'auth', function() use ($app){
 	$app->get('-edit/:id', 'editSale');
 	$app->put('-edit/:id', 'editSale');
 	$app->get('-view/:id', 'viewSale');
-	$app->delete('-active/:id', 'activeSale');
+	$app->put('-status/:id', 'statusSale');
 });

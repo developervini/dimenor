@@ -183,4 +183,36 @@ class SaleController
 			return $data;
 		}
 	}
+
+	public static function statusSale($id = int)
+	{
+		try {
+			$Sale = Sale::find($id);
+			
+			if ($Sale->status == 0) {
+				$Sale->status = 1;
+				$msg = 'Venda faturada com sucesso';
+			}elseif ($Sale->status == 1) {
+				$Sale->status = 0;
+				$msg = 'Cancelado faturamento de venda com sucesso';
+			}
+
+			$Sale->save();
+
+			$data = array(
+				'msg' => $msg,
+				'class' => 'success', 
+				'route' => '/sale-list'
+			);
+
+			return $data;
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error', 
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
 }
