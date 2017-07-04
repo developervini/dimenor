@@ -40,11 +40,11 @@
 						</div>
 						<div class="col-md-2 form-group">
 							<label>Preço da Ficha</label>
-							<input type="number" name="poker_chip_value" id="poker_chip_value" class="form-control" onchange="pokerChipTotal();" required="true">
+							<input type="number" name="poker_chip_value" id="poker_chip_value" class="form-control" required="true" readonly="true">
 						</div>
 						<div class="col-md-2 form-group">
 							<label>Total de Fichas</label>
-							<input type="text" name="poker_chip_total" id="poker_chip_total" class="form-control" required="true" readonly="true">
+							<input type="text" name="poker_chip_total" id="poker_chip_total" class="form-control" onchange="pokerChipTotal();" required="true">
 						</div>
 					</div>
 					<div class="row">
@@ -59,7 +59,7 @@
 						</div>
 						<div class="col-md-2 form-group">
 							<label>Data</label>
-							<input type="date" name="date" class="form-control" required="true">
+							<input type="date" name="date" class="form-control" required="true" value="{{ 'now'|date('Y-m-d') }}">
 						</div>
 						<div class="col-md-2 form-group">
 							<label>Valor</label>
@@ -162,8 +162,8 @@
 
 	function pokerChipTotal(){
 		var poker_chip = $( "input#poker_chip").val();
-		var poker_chip_value = $( "input#poker_chip_value").val();
-		$( "input#poker_chip_total").prop('value', (poker_chip*poker_chip_value));
+		var poker_chip_total = $( "input#poker_chip_total").val();
+		$( "input#poker_chip_value").prop('value', (poker_chip_total/poker_chip));
 	}
 
 	listClientSite();
