@@ -22,7 +22,7 @@
 								</thead>
 								<tbody>
 									{% for bank in banks %}
-									<tr> 
+									<tr>
 										<td>{{ bank.bank }}</td>
 										<td>{{ bank.account }}</td>
 										{% set tOutlay = 0 %}
@@ -39,7 +39,7 @@
 												{% set tSale = sale.total %}
 											{% endif %}
 										{% endfor %}
-										<td>R$ {{ bank.balance + tSale + tOutlay }}</td>
+										<td>R$ {{ (bank.balance + tSale + tOutlay)|number_format(2, ',', '.') }}</td>
 										<td>
 											<div class="btn-group">
 												{% if bank.active == 0 %}
@@ -91,7 +91,7 @@
               }
             });
 
-            
+
           }
         });
       }else{

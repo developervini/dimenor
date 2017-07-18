@@ -4,12 +4,11 @@
 <div class="content">
 	<div class="container-fluid">
 		<div class="card">
-			<div class="header">
-				<h4 class="title">{{ client.client }}</h4>
-			</div>
 			<div class="content">
 				<div class="row">
 					<div class="col-sm-12">
+						<h5>ID {{ client.id }}</h5>
+						<h5>{{ client.client }}</h5>
 						<h5>{{ client.phone }}</h5>
 						<h5>{{ client.facebook }}</h5>
 						<h5>{{ client.observation }}</h5>
@@ -34,7 +33,7 @@
 						</thead>
 						<tbody>
 							{% for site in sites %}
-							<tr> 
+							<tr>
 								<td>{{ site.site }}</td>
 								<td>{{ site.address }}</td>
 								<td>{{ site.observation }}</td>

@@ -15,6 +15,7 @@
 								<thead>
 									<tr>
 										<th>Situação</th>
+										<th>ID</th>
 										<th>Data</th>
 										<th>Cliente</th>
 										<th>Fichas</th>
@@ -24,7 +25,7 @@
 								</thead>
 								<tbody>
 									{% for sale in sales %}
-									<tr> 
+									<tr>
 										<td>
 											{% if sale.status == 0 %}
 											<span class="label label-danger">Pendente</span>
@@ -32,17 +33,18 @@
 											<span class="label label-success">Faturado</span>
 											{% endif %}
 										</td>
+										<td>{{ sale.id }}</td>
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>{{ sale.client }}</td>
 										<td>{{ sale.poker_chip }}</td>
-										<td>R$ {{ sale.total }}</td>
+										<td>R$ {{ sale.total|number_format(2, ',', '.') }}</td>
 										<td>
 											<div class="btn-group">
 												{% if sale.status == 1 %}
-						                        <button type="submit" onclick="statusSale({{ sale.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
-						                        {% elseif sale.status == 0 %}
-						                        <button type="submit" onclick="statusSale({{ sale.id }}, 'faturar')" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></button>
-						                        {% endif %}
+                        <button type="submit" onclick="statusSale({{ sale.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+                        {% elseif sale.status == 0 %}
+                        <a href="/sale-edit/{{ sale.id }}" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></a>
+                        {% endif %}
 											</div>
 										</td>
 									</tr>
@@ -85,7 +87,7 @@
               }
             });
 
-            
+
           }
         });
       }else{
