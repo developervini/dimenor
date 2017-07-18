@@ -1,0 +1,53 @@
+{% extends "menu.html" %}
+{% block body %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Finalizar Venda</h4>
+      </div>
+      <div class="content">
+        <form action="/sale-edit/{{ sale.id }}" method="POST" id="registerFormValidation">
+          <input type="hidden" name="_METHOD" value="PUT"/>
+					<input type="hidden" name="id" value="{{ sale.id }}"/>
+          <div class="row">
+            <div class="col-md-2 form-group">
+              <p>ID {{ sale.id }}</p>
+              <p>{{ sale.client }}</p>
+              <p>Nº de Fichas {{ sale.poker_chip }}</p>
+              <p>Percentual {{ sale.poker_chip_value }}</p>
+              <p>Total R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 form-group">
+              <label>Data</label>
+              <input type="date" name="date" class="form-control" required="true" value="{{ 'now'|date('Y-m-d') }}">
+            </div>
+            <div class="col-md-2 form-group">
+              <label>Conta</label>
+              <select class="form-control" name="bank_id" required="true">
+                {% for bank in banks %}
+                <option value="{{ bank.id }}">{{ bank.bank }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 form-group">
+              <label>Valor</label>
+              <input type="number" name="total" value="{{ sale.poker_chip_total }}" class="form-control" required="true">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group pull-right">
+                <button type="submit" class="btn btn-fill btn-success">Salvar</button>
+                <a href="/sale-list" class="btn btn-fill btn-danger">Cancelar</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
