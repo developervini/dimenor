@@ -16,10 +16,24 @@ class SaleController
 		}
 	}
 
-	public static function listSale()
+	public static function listSale($active = int)
 	{
 		try {
-			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->orderBy('date', 'DESC')->get();
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.status', $active)->orderBy('date', 'DESC')->get();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
+	public static function listSaleClient($client = int)
+	{
+		try {
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('c.id', $client)->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -99,13 +113,17 @@ class SaleController
 			$Sale->date = $data['date'];
 			$Sale->total = $data['total'];
 			$Sale->bank_id = $data['bank_id'];
-			$Sale->status = $data['status'];
+			if($Sale->pay == 0){
+				$Sale->status = 1;
+			}else{
+				$Sale->status = 0;
+			}
 			$Sale->save();
 
 			$data = array(
 				'msg' => 'Venda inserida com sucesso',
 				'class' => 'success',
-				'route' => '/sale-list'
+				'route' => '/sale-list/' . $Sale->status
 			);
 
 			return $data;
@@ -132,7 +150,7 @@ class SaleController
 			$data = array(
 				'msg' => 'Venda finalizada e faturada com sucesso',
 				'class' => 'success',
-				'route' => '/sale-list'
+				'route' => '/sale-list/' . $Sale->pay
 			);
 
 			return $data;
@@ -196,7 +214,7 @@ class SaleController
 			$data = array(
 				'msg' => $msg,
 				'class' => 'success',
-				'route' => '/sale-list'
+				'route' => '/sale-list/' . $Sale->status
 			);
 
 			return $data;

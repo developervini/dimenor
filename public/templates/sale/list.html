@@ -36,8 +36,8 @@
 										<td>{{ sale.id }}</td>
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>{{ sale.client }}</td>
-										<td>{{ sale.poker_chip }}</td>
-										<td>R$ {{ sale.total|number_format(2, ',', '.') }}</td>
+										<td>{{ sale.poker_chip|number_format(2, ',', '.') }}</td>
+										<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
 										<td>
 											<div class="btn-group">
 												{% if sale.status == 1 %}

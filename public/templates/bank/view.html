@@ -47,7 +47,7 @@
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>Venda</td>
 										<td>{{ sale.client }}</td>
-										<td>R$ {{ sale.total|number_format(2, ',', '.') }}</td>
+										<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
 									</tr>
 									{% endfor %}
 									{% for outlay in outlays %}
@@ -55,7 +55,11 @@
 										<td>{{ outlay.date|date('d/m/Y') }}</td>
 										<td>{{ outlay.outlay }}</td>
 										<td>{{ outlay.plan }}</td>
-										<td>R$ {{ outlay.operation }} {{ outlay.total|number_format(2, ',', '.') }}</td>
+										{% if outlay.operation == '-' %}
+											<td style="color: red;" align="right">R$ {{ outlay.operation }} {{ outlay.total|number_format(2, ',', '.') }}</td>
+										{% else %}
+											<td align="right">R$ {{ outlay.operation }} {{ outlay.total|number_format(2, ',', '.') }}</td>
+										{% endif %}
 									</tr>
 									{% endfor %}
 								</tbody>

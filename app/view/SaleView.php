@@ -1,10 +1,10 @@
 <?php
 use \Slim\Slim as Slim;
 
-function listSale()
+function listSale($active = int)
 {
 	$app = Slim::getInstance();
-	$app->render('sale/list.html', array('sales' => SaleController::listSale(), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('sale/list.html', array('sales' => SaleController::listSale($active), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function viewSale($id = int)
@@ -21,7 +21,7 @@ function newSale()
 	}elseif ($app->request->isPost()) {
 		$response = SaleController::newSale($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function editSale($id = int)
@@ -32,7 +32,7 @@ function editSale($id = int)
 	}elseif ($app->request->isPut()) {
 		$response = SaleController::editSale($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function activeSale($id = int)
@@ -41,7 +41,7 @@ function activeSale($id = int)
 	if ($app->request->isDelete()) {
 		$response = SaleController::activeSale($id);
 		echo json_encode($response);
-	}	
+	}
 }
 
 function statusSale($id = int)
@@ -50,5 +50,5 @@ function statusSale($id = int)
 	if ($app->request->isPut()) {
 		$response = SaleController::statusSale($id);
 		echo json_encode($response);
-	}	
+	}
 }
