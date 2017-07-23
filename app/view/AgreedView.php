@@ -10,7 +10,7 @@ function listAgreed()
 function viewAgreed($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('agreed/view.html', array('agreed' => AgreedController::findAgreed($id), 'sites' => AgreedSiteController::listAgreedSite($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('agreed/view.html', array('agreed' => AgreedController::findAgreed($id), 'sites' => AgreedSiteController::listAgreedSite($id), 'sales' => SaleController::listSaleAgreed($id),'totalSale' => SaleController::getTotalSaleAgreed($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newAgreed()
@@ -21,7 +21,7 @@ function newAgreed()
 	}elseif ($app->request->isPost()) {
 		$response = AgreedController::newAgreed($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function editAgreed($id = int)
@@ -32,7 +32,7 @@ function editAgreed($id = int)
 	}elseif ($app->request->isPut()) {
 		$response = AgreedController::editAgreed($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function activeAgreed($id = int)
@@ -41,5 +41,5 @@ function activeAgreed($id = int)
 	if ($app->request->isDelete()) {
 		$response = AgreedController::activeAgreed($id);
 		echo json_encode($response);
-	}	
+	}
 }

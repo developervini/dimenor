@@ -72,6 +72,34 @@ class SaleController
 		}
 	}
 
+	public static function getTotalSaleAgreed($agreed_id = int)
+	{
+		try {
+			return Sale::selectRaw('SUM(total) as total')->where('agreed_id', $agreed_id)->first();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
+	public static function listSaleAgreed($agreed_id = int)
+	{
+		try {
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
 	public static function listSaleBank($bank_id = int)
 	{
 		try {
