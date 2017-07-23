@@ -39,7 +39,7 @@
 												{% set tSale = sale.total %}
 											{% endif %}
 										{% endfor %}
-										<td>R$ {{ (bank.balance + tSale + tOutlay)|number_format(2, ',', '.') }}</td>
+										<td align="right">R$ {{ (bank.balance + tSale + tOutlay)|number_format(2, ',', '.') }}</td>
 										<td>
 											<div class="btn-group">
 												{% if bank.active == 0 %}

@@ -10,7 +10,7 @@ function listClient()
 function viewClient($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('client/view.html', array('client' => ClientController::findClient($id), 'sites' => ClientSiteController::listClientSite($id), 'users_sites' => ClientSiteUserController::listClientSiteUser($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('client/view.html', array('client' => ClientController::findClient($id), 'sites' => ClientSiteController::listClientSite($id), 'users_sites' => ClientSiteUserController::listClientSiteUser($id), 'sales' => SaleController::listSaleClient($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newClient()
@@ -21,7 +21,7 @@ function newClient()
 	}elseif ($app->request->isPost()) {
 		$response = ClientController::newClient($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function editClient($id = int)
@@ -32,7 +32,7 @@ function editClient($id = int)
 	}elseif ($app->request->isPut()) {
 		$response = ClientController::editClient($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
-	}	
+	}
 }
 
 function activeClient($id = int)
@@ -41,5 +41,5 @@ function activeClient($id = int)
 	if ($app->request->isDelete()) {
 		$response = ClientController::activeClient($id);
 		echo json_encode($response);
-	}	
+	}
 }

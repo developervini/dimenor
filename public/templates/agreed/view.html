@@ -13,6 +13,7 @@
 						<h5>{{ agreed.phone }}</h5>
 						<h5>{{ agreed.facebook }}</h5>
 						<h5>{{ agreed.observation }}</h5>
+						<h5>R$ {{ agreed.balance|number_format(2, ',', '.') }}</h5>
 					</div>
 				</div>
 			</div>
@@ -33,7 +34,7 @@
 						</thead>
 						<tbody>
 							{% for site in sites %}
-							<tr> 
+							<tr>
 								<td>{{ site.site }}</td>
 								<td>{{ site.address }}</td>
 								<td>{{ site.observation }}</td>

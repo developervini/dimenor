@@ -110,7 +110,7 @@ $app->group('/plan', 'auth', function() use ($app){
 
 
 $app->group('/sale', 'auth', function() use ($app){
-	$app->get('-list', 'listSale');
+	$app->get('-list/:active', 'listSale');
 	$app->get('-new', 'newSale');
 	$app->post('-new', 'newSale');
 	$app->get('-edit/:id', 'editSale');
