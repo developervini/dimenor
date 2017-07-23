@@ -13,7 +13,8 @@
 						<h5>{{ agreed.phone }}</h5>
 						<h5>{{ agreed.facebook }}</h5>
 						<h5>{{ agreed.observation }}</h5>
-						<h5>R$ {{ agreed.balance|number_format(2, ',', '.') }}</h5>
+						{% set total = agreed.balance + (-totalSale.total) %}
+						<h5>R$ {{ total|number_format(2, ',', '.') }}</h5>
 					</div>
 				</div>
 			</div>
@@ -39,6 +40,55 @@
 								<td>{{ site.address }}</td>
 								<td>{{ site.observation }}</td>
 								<td>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="header">
+				<h4 class="title">Vendas <a type="button" href="/sale-new" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+			</div>
+			<div class="content">
+				<div class="table-responsive">
+					<table class="table table-striped table-no-bordered table-hover display" cellspacing="0" width="100%" style="width:100%">
+						<thead>
+							<tr>
+								<th>Situação</th>
+								<th>ID</th>
+								<th>Data</th>
+								<th>Cliente</th>
+								<th>Fichas</th>
+								<th>Valor</th>
+								<th>Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for sale in sales %}
+							<tr>
+								<td>
+									{% if sale.status == 0 %}
+									<span class="label label-danger">Pendente</span>
+									{% else %}
+									<span class="label label-success">Faturado</span>
+									{% endif %}
+								</td>
+								<td>{{ sale.id }}</td>
+								<td>{{ sale.date|date('d/m/Y') }}</td>
+								<td>{{ sale.client }}</td>
+								<td>{{ sale.poker_chip|number_format(2, ',', '.') }}</td>
+								<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
+								<td>
+									<div class="btn-group">
+										{% if sale.status == 1 %}
+										<button type="submit" onclick="statusSale({{ sale.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
+										{% elseif sale.status == 0 %}
+										<a href="/sale-edit/{{ sale.id }}" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></a>
+										{% endif %}
+									</div>
 								</td>
 							</tr>
 							{% endfor %}
