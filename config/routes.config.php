@@ -118,3 +118,13 @@ $app->group('/sale', 'auth', function() use ($app){
 	$app->get('-view/:id', 'viewSale');
 	$app->put('-status/:id', 'statusSale');
 });
+
+$app->group('/purchase', 'auth', function() use ($app){
+	$app->get('-list/:active', 'listPurchase');
+	$app->get('-new', 'newPurchase');
+	$app->post('-new', 'newPurchase');
+	$app->get('-edit/:id', 'editPurchase');
+	$app->put('-edit/:id', 'editPurchase');
+	$app->get('-view/:id', 'viewPurchase');
+	$app->put('-status/:id', 'statusPurchase');
+});

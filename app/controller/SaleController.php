@@ -75,7 +75,7 @@ class SaleController
 	public static function getTotalSaleAgreed($agreed_id = int)
 	{
 		try {
-			return Sale::selectRaw('SUM(total) as total')->where('agreed_id', $agreed_id)->first();
+			return Sale::selectRaw('SUM(total) as total')->where('agreed_id', $agreed_id)->where('status', 1)->first();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -89,7 +89,7 @@ class SaleController
 	public static function listSaleAgreed($agreed_id = int)
 	{
 		try {
-			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->where('status', 1)->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
