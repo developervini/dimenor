@@ -7,7 +7,16 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="content">
-						<div id="container"></div>
+						<div id="sales"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="content">
+						<div id="purchases"></div>
 					</div>
 				</div>
 			</div>
@@ -19,13 +28,13 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript">
 
-	var data = {{ sales|raw }};
+	var sales = {{ sales|raw }};
 	var labels = {};
 	var series_f = {};
 	var series_p = {};
 
 
-	$(data).each(function(index, obj) {
+	$(sales).each(function(index, obj) {
 		labels[obj.label] = 'Dia ' + obj.label;
 
 		if(obj.status == 0){
@@ -46,23 +55,19 @@
 	var series_p = Object.keys(series_p).map(function (key) { return series_p[key]; });
 	var series_f = Object.keys(series_f).map(function (key) { return series_f[key]; });
 
-	console.log(labels);
-	console.log(series_p);
-	console.log(series_f);
-
-	Highcharts.chart('container', {
-
+	Highcharts.chart('sales', {
 		title: {
 			text: 'Vendas'
 		},
-
+		credits: {
+      enabled: false
+	  },
 		subtitle: {
 			text: '{{ "now"|date("M") }}'
 		},
 		xAxis: {
 			categories: labels
 		},
-
 		yAxis: {
 			title: {
 				text: 'Total'
@@ -86,7 +91,71 @@
 			color: 'red',
 			data: series_p
 		}]
+	});
 
+	var purchases = {{ purchases|raw }};
+	labels = {};
+	series_f = {};
+	series_p = {};
+
+
+	$(purchases).each(function(index, obj) {
+		labels[obj.label] = 'Dia ' + obj.label;
+
+		if(obj.status == 0){
+			series_p[obj.label] = obj.data;
+		}else{
+			series_f[obj.label] = obj.data;
+		}
+
+		if(!(obj.label in series_f)){
+			series_f[obj.label] = null;
+		}
+		if(!(obj.label in series_p)){
+			series_p[obj.label] = null;
+		}
+	});
+
+	var labels = Object.keys(labels).map(function (key) { return labels[key]; });
+	var series_p = Object.keys(series_p).map(function (key) { return series_p[key]; });
+	var series_f = Object.keys(series_f).map(function (key) { return series_f[key]; });
+
+	Highcharts.chart('purchases', {
+		title: {
+			text: 'Compras'
+		},
+		credits: {
+			enabled: false
+		},
+		subtitle: {
+			text: '{{ "now"|date("M") }}'
+		},
+		xAxis: {
+			categories: labels
+		},
+		yAxis: {
+			title: {
+				text: 'Total'
+			},
+			labels: {
+				formatter: function () {
+					return 'R$ ' + this.value;
+				}
+			}
+		},
+		tooltip: {
+			crosshairs: true,
+			shared: true
+		},
+		series: [{
+			name: 'Efetuada',
+			color: 'green',
+			data: series_f
+		}, {
+			name: 'Pendente',
+			color: 'red',
+			data: series_p
+		}]
 	});
 
 

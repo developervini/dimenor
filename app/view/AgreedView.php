@@ -10,7 +10,7 @@ function listAgreed()
 function viewAgreed($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('agreed/view.html', array('agreed' => AgreedController::findAgreed($id), 'sites' => AgreedSiteController::listAgreedSite($id), 'sales' => SaleController::listSaleAgreed($id),'totalSale' => SaleController::getTotalSaleAgreed($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('agreed/view.html', array('agreed' => AgreedController::findAgreed($id), 'sites' => AgreedSiteController::listAgreedSite($id), 'sales' => SaleController::listSaleAgreed($id),'totalSale' => SaleController::getTotalSaleAgreed($id), 'purchases' => PurchaseController::listPurchaseAgreed($id),'totalPurchase' => PurchaseController::getTotalPurchaseAgreed($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newAgreed()
