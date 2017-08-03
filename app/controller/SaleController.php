@@ -75,7 +75,7 @@ class SaleController
 	public static function getTotalSaleAgreed($agreed_id = int)
 	{
 		try {
-			return Sale::selectRaw('SUM(total) as total')->where('agreed_id', $agreed_id)->where('status', 1)->first();
+			return Sale::selectRaw('SUM(poker_chip) as total')->where('agreed_id', $agreed_id)->first();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -89,7 +89,7 @@ class SaleController
 	public static function listSaleAgreed($agreed_id = int)
 	{
 		try {
-			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->where('status', 1)->orderBy('date', 'DESC')->get();
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -169,17 +169,32 @@ class SaleController
 	{
 		try {
 			$Sale = Sale::find($data['id']);
-			$Sale->date = $data['date'];
-			$Sale->total = $data['total'];
-			$Sale->bank_id = $data['bank_id'];
-			$Sale->status = 1;
-			$Sale->save();
+			$PortionSale = new PortionSale();
+			$PortionSale->date = $data['date'];
+			$PortionSale->portion = $data['total'];
+			$PortionSale->bank_id = $data['bank_id'];
+			$PortionSale->sale_id = $data['id'];
+			$PortionSale->save();
+			$PortionSaleTotal = PortionSaleController::getTotalPortionSale($Sale->id);
 
-			$data = array(
-				'msg' => 'Venda finalizada e faturada com sucesso',
-				'class' => 'success',
-				'route' => '/sale-list/' . $Sale->pay
-			);
+			if($PortionSaleTotal->total >= $Sale->poker_chip_total){
+				$Sale->date = $data['date'];
+				$Sale->total = $PortionSaleTotal->total;
+				$Sale->status = 1;
+				$Sale->save();
+
+				$data = array(
+					'msg' => 'Venda finalizada e faturada com sucesso',
+					'class' => 'success',
+					'route' => '/sale-list/' . $Sale->status
+				);
+			}else {
+				$data = array(
+					'msg' => 'Parcela inserida com sucesso',
+					'class' => 'success',
+					'route' => '/sale-list/' . $Sale->status
+				);
+			}
 
 			return $data;
 		} catch (Exception $ex) {
@@ -233,6 +248,7 @@ class SaleController
 				$Sale->status = 1;
 				$msg = 'Venda faturada com sucesso';
 			}elseif ($Sale->status == 1) {
+				$PortionSale = PortionSaleController::deletePortionSale($Sale->id);
 				$Sale->status = 0;
 				$msg = 'Cancelado faturamento de venda com sucesso';
 			}

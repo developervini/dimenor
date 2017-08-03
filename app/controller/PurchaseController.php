@@ -75,7 +75,7 @@ class PurchaseController
 	public static function getTotalPurchaseAgreed($agreed_id = int)
 	{
 		try {
-			return Purchase::selectRaw('SUM(total) as total')->where('agreed_id', $agreed_id)->where('status', 1)->first();
+			return Purchase::selectRaw('SUM(poker_chip) as total')->where('agreed_id', $agreed_id)->first();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -89,7 +89,7 @@ class PurchaseController
 	public static function listPurchaseAgreed($agreed_id = int)
 	{
 		try {
-			return Purchase::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('purchase.*', 'c.client')->where('purchase.agreed_id', $agreed_id)->where('status', 1)->orderBy('date', 'DESC')->get();
+			return Purchase::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('purchase.*', 'c.client')->where('purchase.agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),

@@ -37,7 +37,7 @@
 									<tr>
 										<th>Data</th>
 										<th>Tipo</th>
-										<th>Cliente/Plano de Conta</th>
+										<th>Venda/Plano de Conta</th>
 										<th>Valor</th>
 									</tr>
 								</thead>
@@ -46,8 +46,8 @@
 									<tr>
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>Venda</td>
-										<td>{{ sale.client }}</td>
-										<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
+										<td><a href="javascript:window.open('/sale-view/{{ sale.sale_id }}','Venda {{sale.id}}','width=750,height=750')">Venda {{sale.id}}</a></td>
+										<td align="right">R$ {{ sale.portion|number_format(2, ',', '.') }}</td>
 									</tr>
 									{% endfor %}
 									{% for outlay in outlays %}
