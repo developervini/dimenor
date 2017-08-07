@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05-Jun-2017 às 05:34
--- Versão do servidor: 10.1.22-MariaDB
--- PHP Version: 7.0.18
+-- Generation Time: 07-Ago-2017 às 12:58
+-- Versão do servidor: 10.1.25-MariaDB
+-- PHP Version: 7.0.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,7 +44,8 @@ CREATE TABLE `agreed` (
 --
 
 INSERT INTO `agreed` (`id`, `agreed`, `balance`, `phone`, `facebook`, `coin_id`, `observation`, `active`) VALUES
-(1, 'Conveniado 01', 5000.00, '(99) 99999-9999', 'http://fb.com', 1, '', 0);
+(9, 'CredBrasil (U$)', 0.00, '(11) 99740-4001', '', 1, 'PS - 888 - bet365(alternativo) - PP', 0),
+(10, 'VCreditos (U$)', 0.00, '', '', 1, '', 0);
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,10 @@ CREATE TABLE `agreed_site` (
 --
 
 INSERT INTO `agreed_site` (`id`, `agreed_id`, `site_id`, `active`) VALUES
-(1, 1, 1, 0);
+(2, 9, 3, 0),
+(3, 9, 4, 0),
+(4, 10, 6, 0),
+(5, 9, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -85,7 +89,8 @@ CREATE TABLE `bank` (
 --
 
 INSERT INTO `bank` (`id`, `bank`, `account`, `balance`, `active`) VALUES
-(1, 'Banco do Brasil', '1234 5678-9', 0.00, 0);
+(2, 'BB - Marina', '0628-9 / 34.540-0', 0.00, 0),
+(3, 'Tiago DHO', 'em especie', 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -107,8 +112,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id`, `client`, `phone`, `facebook`, `observation`, `active`) VALUES
-(1, 'Fulano Santos', '(51) 99999-9999', 'http://fb.com/fulano', 'Uma pessoa bem peculiar.', 0),
-(2, 'Teste de cliente', '(11)11111-1111', '', '', 0);
+(3, 'Tiago Nahin Fauth', '(51) 99990-9499', '', 'credito liberado: R$ 300,00\r\nconta BB: ag 06289 - cc 315400 - propria\r\n', 0),
+(4, 'Lucas Fauth', '(51) 99350-3940', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -128,9 +133,9 @@ CREATE TABLE `client_site` (
 --
 
 INSERT INTO `client_site` (`id`, `client_id`, `site_id`, `active`) VALUES
-(6, 1, 1, 0),
-(7, 1, 2, 0),
-(8, 2, 1, 0);
+(9, 3, 3, 0),
+(10, 3, 6, 0),
+(11, 4, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -150,14 +155,10 @@ CREATE TABLE `client_site_user` (
 --
 
 INSERT INTO `client_site_user` (`id`, `client_site_id`, `username`, `active`) VALUES
-(11, 6, 'vinibsantos', 0),
-(12, 6, 'developervini', 0),
-(13, 6, 'viniciusbs', 0),
-(14, 7, 'viniteste', 0),
-(15, 8, 'testecliente', 0),
-(16, 8, 'testinho', 0),
-(17, 8, 'testao', 0),
-(18, 8, 'zoeira', 0);
+(19, 9, 'tiagofauth', 0),
+(20, 9, '', 0),
+(21, 10, 'tiagobet / tiago nahin fauth', 0),
+(22, 11, 'lucasdimenor', 0);
 
 -- --------------------------------------------------------
 
@@ -177,8 +178,31 @@ CREATE TABLE `coin` (
 --
 
 INSERT INTO `coin` (`id`, `coin`, `percentage`, `active`) VALUES
-(1, 'R$', 0, 0),
-(2, 'U$$', 3.026, 0);
+(1, 'R$', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `outlay`
+--
+
+CREATE TABLE `outlay` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `date_extract` date NOT NULL,
+  `outlay` text NOT NULL,
+  `plan_id` int(11) NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `total` float(10,2) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `outlay`
+--
+
+INSERT INTO `outlay` (`id`, `date`, `date_extract`, `outlay`, `plan_id`, `bank_id`, `total`, `user_id`) VALUES
+(5, '2017-06-27 16:53:13', '2017-06-27', 'pagamento telefone', 5, 2, 200.00, 2);
 
 -- --------------------------------------------------------
 
@@ -189,6 +213,7 @@ INSERT INTO `coin` (`id`, `coin`, `percentage`, `active`) VALUES
 CREATE TABLE `plan` (
   `id` int(11) NOT NULL,
   `plan` varchar(100) NOT NULL,
+  `operation` varchar(1) NOT NULL,
   `active` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -196,10 +221,94 @@ CREATE TABLE `plan` (
 -- Extraindo dados da tabela `plan`
 --
 
-INSERT INTO `plan` (`id`, `plan`, `active`) VALUES
-(1, 'Receita ', 0),
-(2, 'Insumos escritório', 0),
-(3, 'Insumos higiênicos', 0);
+INSERT INTO `plan` (`id`, `plan`, `operation`, `active`) VALUES
+(4, 'Despesas Lucas (particular)', '-', 0),
+(5, 'Despesas Casa', '-', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `portion_purchase`
+--
+
+CREATE TABLE `portion_purchase` (
+  `id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `portion` float(10,2) NOT NULL,
+  `purchase_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `portion_purchase`
+--
+
+INSERT INTO `portion_purchase` (`id`, `date`, `bank_id`, `portion`, `purchase_id`) VALUES
+(1, '2017-08-05', 2, 10.00, 2),
+(2, '2017-08-05', 2, 100.00, 2),
+(3, '2017-08-05', 3, 190.00, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `portion_sale`
+--
+
+CREATE TABLE `portion_sale` (
+  `id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `portion` float(10,2) NOT NULL,
+  `sale_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `portion_sale`
+--
+
+INSERT INTO `portion_sale` (`id`, `date`, `bank_id`, `portion`, `sale_id`) VALUES
+(4, '2017-08-01', 2, 10.00, 13),
+(5, '2017-08-01', 2, 30.00, 13),
+(6, '2017-08-01', 2, 110.00, 13),
+(13, '2017-08-02', 2, 89.50, 8),
+(14, '2017-08-02', 3, 100.00, 8),
+(15, '2017-08-02', 2, 100.00, 6),
+(16, '2017-08-02', 3, 150.00, 6),
+(17, '2017-08-02', 2, 79.00, 6),
+(18, '2017-08-03', 2, 50.00, 6),
+(19, '2017-08-01', 2, 89.50, 7),
+(20, '2017-08-02', 2, 120.00, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `purchase`
+--
+
+CREATE TABLE `purchase` (
+  `id` int(11) NOT NULL,
+  `client_site_user_id` int(11) NOT NULL,
+  `agreed_id` int(11) NOT NULL,
+  `poker_chip` float(10,2) NOT NULL,
+  `poker_chip_value` float(10,2) NOT NULL,
+  `poker_chip_total` float(10,2) NOT NULL,
+  `pay` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `total` float(10,2) NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `purchase`
+--
+
+INSERT INTO `purchase` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `total`, `bank_id`, `status`) VALUES
+(1, 22, 9, 100.00, 5.00, 500.00, 0, '2017-07-24', 550.00, 2, 1),
+(2, 19, 9, 120.00, 2.50, 300.00, 0, '2017-08-05', 300.00, 2, 1),
+(3, 22, 9, 100.00, 9.69, 968.50, 0, '2017-07-24', 968.50, 2, 1),
+(4, 22, 9, 100.00, 10.00, 1000.00, 0, '2017-07-24', 1000.00, 3, 1),
+(5, 22, 9, 130.00, 7.69, 1000.00, 0, '2017-07-26', 1000.00, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -226,11 +335,14 @@ CREATE TABLE `sale` (
 --
 
 INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `total`, `bank_id`, `status`) VALUES
-(1, 11, 1, 100, 2.00, 200.00, 0, '2017-05-28', 200.00, 1, 0),
-(2, 11, 1, 1000, 1.55, 1550.00, 0, '2017-05-27', 1550.00, 1, 1),
-(3, 11, 1, 100, 5.00, 500.00, 0, '2017-05-28', 500.00, 1, 1),
-(4, 11, 1, 100, 2.54, 254.00, 0, '2017-05-27', 254.00, 1, 0),
-(5, 11, 1, 100, 2.54, 254.00, 0, '2017-05-16', 254.00, 1, 0);
+(6, 19, 9, 100, 3.79, 379.00, 0, '2017-08-03', 379.00, 2, 1),
+(7, 21, 10, 50, 3.79, 189.50, 0, '2017-08-02', 209.50, 2, 1),
+(8, 19, 9, 50, 3.79, 189.50, 0, '2017-08-02', 189.50, 2, 1),
+(9, 22, 9, 50, 3.79, 189.50, 0, '2017-06-27', 189.50, 2, 1),
+(10, 22, 9, 100, 10.00, 1000.00, 0, '2017-07-24', 1000.00, 2, 1),
+(11, 22, 9, 100, 10.00, 1000.00, 0, '2017-07-20', 1050.00, 2, 1),
+(12, 22, 9, 50, 4.00, 200.00, 0, '2017-07-24', 200.00, 2, 1),
+(13, 22, 9, 100, 1.50, 150.00, 1, '2017-08-01', 150.00, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -251,8 +363,10 @@ CREATE TABLE `site` (
 --
 
 INSERT INTO `site` (`id`, `site`, `address`, `observation`, `active`) VALUES
-(1, 'Bet365', 'http://bet365.com', 'Site de apostas que aceita real.', 0),
-(2, 'PokerStars', 'https://www.pokerstars.com/', 'oi', 0);
+(3, 'Poker Stars', 'http://www.pokerstars.com', 'conv: Credbrasil', 0),
+(4, 'Party Poker', 'http://www.partypoker.com', 'conv: Credbrasil', 1),
+(5, 'Party Poker', 'http://www.partypoker.com', 'conv: Credbrasil', 0),
+(6, 'Bet365', 'https://www.vcreditos.com/bet365/agente20/sports', 'conv: VCreditos\r\nConv. altenativo: Credbrasil', 0);
 
 -- --------------------------------------------------------
 
@@ -330,10 +444,44 @@ ALTER TABLE `coin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `outlay`
+--
+ALTER TABLE `outlay`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `plan_id` (`plan_id`),
+  ADD KEY `bank_id` (`bank_id`),
+  ADD KEY `total` (`total`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `plan`
 --
 ALTER TABLE `plan`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `portion_purchase`
+--
+ALTER TABLE `portion_purchase`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bank_id` (`bank_id`),
+  ADD KEY `purchase_id` (`purchase_id`);
+
+--
+-- Indexes for table `portion_sale`
+--
+ALTER TABLE `portion_sale`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bank_id` (`bank_id`),
+  ADD KEY `sale_id` (`sale_id`);
+
+--
+-- Indexes for table `purchase`
+--
+ALTER TABLE `purchase`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_site_user_id` (`client_site_user_id`),
+  ADD KEY `bank_id` (`bank_id`);
 
 --
 -- Indexes for table `sale`
@@ -363,52 +511,72 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `agreed`
 --
 ALTER TABLE `agreed`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `agreed_site`
 --
 ALTER TABLE `agreed_site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `bank`
 --
 ALTER TABLE `bank`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `client_site`
 --
 ALTER TABLE `client_site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `client_site_user`
 --
 ALTER TABLE `client_site_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `coin`
 --
 ALTER TABLE `coin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `outlay`
+--
+ALTER TABLE `outlay`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `plan`
 --
 ALTER TABLE `plan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `portion_purchase`
+--
+ALTER TABLE `portion_purchase`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `portion_sale`
+--
+ALTER TABLE `portion_sale`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `purchase`
+--
+ALTER TABLE `purchase`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `site`
 --
 ALTER TABLE `site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -443,6 +611,28 @@ ALTER TABLE `client_site`
 --
 ALTER TABLE `client_site_user`
   ADD CONSTRAINT `client_site_user_ibfk_1` FOREIGN KEY (`client_site_id`) REFERENCES `client_site` (`id`);
+
+--
+-- Limitadores para a tabela `outlay`
+--
+ALTER TABLE `outlay`
+  ADD CONSTRAINT `outlay_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `plan` (`id`),
+  ADD CONSTRAINT `outlay_ibfk_2` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`),
+  ADD CONSTRAINT `outlay_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Limitadores para a tabela `portion_purchase`
+--
+ALTER TABLE `portion_purchase`
+  ADD CONSTRAINT `portion_purchase_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`),
+  ADD CONSTRAINT `portion_purchase_ibfk_2` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`);
+
+--
+-- Limitadores para a tabela `portion_sale`
+--
+ALTER TABLE `portion_sale`
+  ADD CONSTRAINT `portion_sale_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`),
+  ADD CONSTRAINT `portion_sale_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -14,7 +14,7 @@
               <p>ID {{ sale.id }}</p>
               <p>{{ sale.client }}</p>
               <p>Nº de Fichas {{ sale.poker_chip }}</p>
-              <p>Percentual {{ sale.poker_chip_value }}</p>
+              <p>Valor Ficha R$ {{ sale.poker_chip_value|number_format(2, ',', '.') }}</p>
               <p>Total R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</p>
             </div>
             <div class="col-md-6 form-group">

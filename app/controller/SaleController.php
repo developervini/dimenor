@@ -140,19 +140,12 @@ class SaleController
 			$Sale->pay = $data['pay'];
 			$Sale->date = $data['date'];
 			$Sale->total = $data['total'];
-			$Sale->bank_id = $data['bank_id'];
 			if($Sale->pay == 0){
 				$Sale->status = 1;
 			}else{
 				$Sale->status = 0;
 			}
 			$Sale->save();
-
-			$data = array(
-				'msg' => 'Venda inserida com sucesso',
-				'class' => 'success',
-				'route' => '/sale-list/' . $Sale->status
-			);
 
 			return $data;
 		} catch (Exception $ex) {

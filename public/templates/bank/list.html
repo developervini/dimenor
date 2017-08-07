@@ -27,6 +27,7 @@
 										<td>{{ bank.account }}</td>
 										{% set tOutlay = 0 %}
 										{% set tSale = 0 %}
+										{% set tPurchase = 0 %}
 										{% for outlay in totalOutlay %}
 											{% if outlay.operation == '+' and outlay.bank_id == bank.id %}
 												{% set tOutlay = tOutlay + outlay.total %}
@@ -39,7 +40,12 @@
 												{% set tSale = sale.total %}
 											{% endif %}
 										{% endfor %}
-										<td align="right">R$ {{ (bank.balance + tSale + tOutlay)|number_format(2, ',', '.') }}</td>
+										{% for purchase in totalPurchase %}
+											{% if purchase.bank_id == bank.id %}
+												{% set tPurchase = purchase.total %}
+											{% endif %}
+										{% endfor %}
+										<td align="right">R$ {{ (bank.balance + tSale + tOutlay - tPurchase)|number_format(2, ',', '.') }}</td>
 										<td>
 											<div class="btn-group">
 												{% if bank.active == 0 %}

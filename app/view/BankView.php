@@ -4,13 +4,13 @@ use \Slim\Slim as Slim;
 function listBank()
 {
 	$app = Slim::getInstance();
-	$app->render('bank/list.html', array('banks' => BankController::listBank(), 'totalSale' => SaleController::getTotalSale(), 'totalOutlay' => OutlayController::getTotalOutlay(), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('bank/list.html', array('banks' => BankController::listBank(), 'totalSale' => PortionSaleController::getTotalPortionSaleTotal(), 'totalPurchase' => PortionPurchaseController::getTotalPortionPurchaseTotal(), 'totalOutlay' => OutlayController::getTotalOutlay(), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function viewBank($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('bank/view.html', array('bank' => BankController::findBank($id), 'sales' => PortionSaleController::listPortionSaleBank($id), 'outlays' => OutlayController::listOutlayBank($id), 'totalSale' => PortionSaleController::getTotalPortionSaleBank($id), 'totalOutlay' => OutlayController::getTotalOutlayBank($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('bank/view.html', array('bank' => BankController::findBank($id), 'sales' => PortionSaleController::listPortionSaleBank($id), 'purchases' => PortionPurchaseController::listPortionPurchaseBank($id), 'outlays' => OutlayController::listOutlayBank($id), 'totalSale' => PortionSaleController::getTotalPortionSaleBank($id), 'totalPurchase' => PortionPurchaseController::getTotalPortionPurchaseBank($id), 'totalOutlay' => OutlayController::getTotalOutlayBank($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newBank()

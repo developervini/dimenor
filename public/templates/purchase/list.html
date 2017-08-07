@@ -42,7 +42,8 @@
 											<div class="btn-group">
 												{% if purchase.status == 1 %}
                         <button type="submit" onclick="statusPurchase({{ purchase.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
-                        {% elseif purchase.status == 0 %}
+												<a href="/purchase-view/{{ purchase.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
+												{% elseif purchase.status == 0 %}
                         <a href="/purchase-edit/{{ purchase.id }}" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></a>
                         {% endif %}
 											</div>

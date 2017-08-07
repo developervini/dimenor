@@ -1,11 +1,11 @@
 <?php
 
-class PortionSaleController
+class PortionPurchaseController
 {
-  public static function listPortionSale($sale)
+  public static function listPortionPurchase($purchase)
   {
     try {
-      return PortionSale::join('bank', 'bank.id', '=', 'bank_id')->select('portion_sale.*', 'bank.bank as bank')->where('sale_id', $sale)->get();
+      return PortionPurchase::join('bank', 'bank.id', '=', 'bank_id')->select('portion_purchase.*', 'bank.bank as bank')->where('purchase_id', $purchase)->get();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),
@@ -16,10 +16,10 @@ class PortionSaleController
     }
   }
 
-  public static function listPortionSaleBank($bank)
+  public static function listPortionPurchaseBank($bank)
   {
     try {
-      return PortionSale::where('bank_id', $bank)->get();
+      return PortionPurchase::where('bank_id', $bank)->get();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),
@@ -30,10 +30,10 @@ class PortionSaleController
     }
   }
 
-  public static function getTotalPortionSale($sale)
+  public static function getTotalPortionPurchase($purchase)
   {
     try {
-      return PortionSale::selectRaw('SUM(portion) as total')->where('sale_id', $sale)->get()->first();
+      return PortionPurchase::selectRaw('SUM(portion) as total')->where('purchase_id', $purchase)->get()->first();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),
@@ -44,10 +44,10 @@ class PortionSaleController
     }
   }
 
-  public static function getTotalPortionSaleBank($bank)
+  public static function getTotalPortionPurchaseBank($bank)
   {
     try {
-      return PortionSale::selectRaw('SUM(portion) as total')->where('bank_id', $bank)->get()->first();
+      return PortionPurchase::selectRaw('SUM(portion) as total')->where('bank_id', $bank)->get()->first();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),
@@ -58,10 +58,10 @@ class PortionSaleController
     }
   }
 
-  public static function getTotalPortionSaleTotal()
+  public static function getTotalPortionPurchaseTotal()
   {
     try {
-      return PortionSale::selectRaw('SUM(portion) as total, bank_id')->groupBy('bank_id')->get();
+      return PortionPurchase::selectRaw('SUM(portion) as total, bank_id')->groupBy('bank_id')->get();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),
@@ -72,10 +72,10 @@ class PortionSaleController
     }
   }
 
-  public static function deletePortionSale($sale)
+  public static function deletePortionPurchase($purchase)
   {
     try {
-      return PortionSale::where('sale_id', $sale)->delete();
+      return PortionPurchase::where('purchase_id', $purchase)->delete();
     } catch (Exception $ex) {
       $data = array(
         'msg' => $ex->getMessage(),

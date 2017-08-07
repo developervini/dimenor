@@ -169,17 +169,32 @@ class PurchaseController
 	{
 		try {
 			$Purchase = Purchase::find($data['id']);
-			$Purchase->date = $data['date'];
-			$Purchase->total = $data['total'];
-			$Purchase->bank_id = $data['bank_id'];
-			$Purchase->status = 1;
-			$Purchase->save();
+			$PortionPurchase = new PortionPurchase();
+			$PortionPurchase->date = $data['date'];
+			$PortionPurchase->portion = $data['total'];
+			$PortionPurchase->bank_id = $data['bank_id'];
+			$PortionPurchase->purchase_id = $data['id'];
+			$PortionPurchase->save();
+			$PortionPurchaseTotal = PortionPurchaseController::getTotalPortionPurchase($Purchase->id);
 
-			$data = array(
-				'msg' => 'Compra finalizada e faturada com sucesso',
-				'class' => 'success',
-				'route' => '/purchase-list/' . $Purchase->pay
-			);
+			if($PortionPurchaseTotal->total >= $Purchase->poker_chip_total){
+				$Purchase->date = $data['date'];
+				$Purchase->total = $PortionPurchaseTotal->total;
+				$Purchase->status = 1;
+				$Purchase->save();
+
+				$data = array(
+					'msg' => 'Compra finalizada com sucesso',
+					'class' => 'success',
+					'route' => '/purchase-list/' . $Purchase->status
+				);
+			}else {
+				$data = array(
+					'msg' => 'Parcela inserida com sucesso',
+					'class' => 'success',
+					'route' => '/purchase-list/' . $Purchase->status
+				);
+			}
 
 			return $data;
 		} catch (Exception $ex) {
