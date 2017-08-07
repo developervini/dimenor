@@ -14,7 +14,7 @@
 						<h5>{{ agreed.facebook }}</h5>
 						<h5>{{ agreed.observation }}</h5>
 						{% set total = agreed.balance + (-totalSale.total) + totalPurchase.total %}
-						<h5>R$ {{ total|number_format(2, ',', '.') }}</h5>
+						<h5>Saldo {{ total|number_format(2, ',', '.') }}</h5>
 					</div>
 				</div>
 			</div>
@@ -62,7 +62,6 @@
 								<th>Data</th>
 								<th>Cliente</th>
 								<th>Fichas</th>
-								<th>Valor</th>
 								<th>Ações</th>
 							</tr>
 						</thead>
@@ -80,7 +79,6 @@
 								<td>{{ sale.date|date('d/m/Y') }}</td>
 								<td>{{ sale.client }}</td>
 								<td>{{ sale.poker_chip|number_format(2, ',', '.') }}</td>
-								<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
 								<td>
 									<div class="btn-group">
 										{% if sale.status == 1 %}
@@ -111,7 +109,6 @@
 								<th>Data</th>
 								<th>Cliente</th>
 								<th>Fichas</th>
-								<th>Valor</th>
 								<th>Ações</th>
 							</tr>
 						</thead>
@@ -129,7 +126,6 @@
 								<td>{{ purchase.date|date('d/m/Y') }}</td>
 								<td>{{ purchase.client }}</td>
 								<td>{{ purchase.poker_chip|number_format(2, ',', '.') }}</td>
-								<td align="right">R$ {{ purchase.total|number_format(2, ',', '.') }}</td>
 								<td>
 									<div class="btn-group">
 										{% if purchase.status == 1 %}

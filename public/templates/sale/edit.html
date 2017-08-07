@@ -11,12 +11,29 @@
           <input type="hidden" name="_METHOD" value="PUT"/>
 					<input type="hidden" name="id" value="{{ sale.id }}"/>
           <div class="row">
-            <div class="col-md-2 form-group">
+            <div class="col-md-6 form-group">
               <p>ID {{ sale.id }}</p>
               <p>{{ sale.client }}</p>
               <p>Nº de Fichas {{ sale.poker_chip }}</p>
               <p>Percentual {{ sale.poker_chip_value }}</p>
               <p>Total R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</p>
+            </div>
+            <div class="col-md-6 form-group">
+              <p>Parcelas</p>
+							<table class="table table-striped table-no-bordered table-hover">
+								<tr>
+									<th>Data</th>
+									<th>Valor</th>
+									<th>Banco</th>
+								</tr>
+	              {% for portion in portions %}
+								<tr>
+	                <td><p>{{ portion.date|date('d/m/Y')}}</p></td>
+									<td><p>R$ {{ portion.portion|number_format(2, ',', '.') }}</p></td>
+									<td><p>{{portion.bank}}</p></td>
+								</tr>
+	              {% endfor %}
+							</table>
             </div>
           </div>
           <div class="row">
@@ -34,7 +51,7 @@
             </div>
             <div class="col-md-2 form-group">
               <label>Valor</label>
-              <input type="number" name="total" value="{{ sale.poker_chip_total }}" class="form-control" required="true">
+              <input type="number" name="total" value="{{ sale.poker_chip_total - portion_total.total }}" class="form-control" required="true">
             </div>
           </div>
           <div class="row">

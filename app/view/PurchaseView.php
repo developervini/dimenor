@@ -10,7 +10,7 @@ function listPurchase($active = int)
 function viewPurchase($id = int)
 {
 	$app = Slim::getInstance();
-	$app->render('purchase/view.html', array('purchase' => PurchaseController::findPurchase($id), 'user_logged' => $_SESSION['user_logged']));
+	$app->render('purchase/view.html', array('purchase' => PurchaseController::findPurchase($id), 'portions' => PortionPurchaseController::listPortionPurchase($id), 'user_logged' => $_SESSION['user_logged']));
 }
 
 function newPurchase()
@@ -28,7 +28,7 @@ function editPurchase($id = int)
 {
 	$app = Slim::getInstance();
 	if ($app->request->isGet()) {
-		$app->render('purchase/edit.html', array('clients' => ClientController::listClient(), 'banks' => BankController::listBank(), 'purchase' => PurchaseController::findPurchase($id), 'user_logged' => $_SESSION['user_logged']));
+		$app->render('purchase/edit.html', array('clients' => ClientController::listClient(), 'banks' => BankController::listBank(), 'purchase' => PurchaseController::findPurchase($id), 'portions' => PortionPurchaseController::listPortionPurchase($id), 'portion_total' => PortionPurchaseController::getTotalPortionPurchase($id), 'user_logged' => $_SESSION['user_logged']));
 	}elseif ($app->request->isPut()) {
 		$response = PurchaseController::editPurchase($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));

@@ -4,12 +4,12 @@ class BankController
 {
 	public static function findBank($id = int)
 	{
-		try {	
+		try {
 			return Bank::find($id);
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
-				'class' => 'error', 
+				'class' => 'error',
 				'route' => '/error-log'
 			);
 			return $data;
@@ -18,12 +18,12 @@ class BankController
 
 	public static function listBank()
 	{
-		try {	
-			return Bank::orderBy('bank', 'ASC')->get();
+		try {
+			return Bank::all();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
-				'class' => 'error', 
+				'class' => 'error',
 				'route' => '/error-log'
 			);
 			return $data;
@@ -41,7 +41,7 @@ class BankController
 
 			$data = array(
 				'msg' => 'Conta inserida com sucesso',
-				'class' => 'success', 
+				'class' => 'success',
 				'route' => '/bank-list'
 			);
 
@@ -49,7 +49,7 @@ class BankController
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
-				'class' => 'error', 
+				'class' => 'error',
 				'route' => '/error-log'
 			);
 			return $data;
@@ -67,7 +67,7 @@ class BankController
 
 			$data = array(
 				'msg' => 'Conta editada com sucesso',
-				'class' => 'success', 
+				'class' => 'success',
 				'route' => '/bank-view/' . $Bank->id
 			);
 
@@ -75,7 +75,7 @@ class BankController
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
-				'class' => 'error', 
+				'class' => 'error',
 				'route' => '/error-log'
 			);
 			return $data;
@@ -86,7 +86,7 @@ class BankController
 	{
 		try {
 			$Bank = Bank::find($id);
-			
+
 			if ($Bank->active == 0) {
 				$Bank->active = 1;
 				$msg = 'Conta removida com sucesso';
@@ -99,7 +99,7 @@ class BankController
 
 			$data = array(
 				'msg' => $msg,
-				'class' => 'success', 
+				'class' => 'success',
 				'route' => '/bank-list'
 			);
 
@@ -107,7 +107,7 @@ class BankController
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
-				'class' => 'error', 
+				'class' => 'error',
 				'route' => '/error-log'
 			);
 			return $data;

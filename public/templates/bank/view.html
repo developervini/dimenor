@@ -19,7 +19,7 @@
 								{% set total = total + (-outlay.total) %}
 							{% endif %}
 						{% endfor %}
-						<h5>R$ {{ (bank.balance + totalSale.total + total)|number_format(2, ',', '.') }}</h5>
+						<h5>R$ {{ (bank.balance + totalSale.total + total - totalPurchase.total )|number_format(2, ',', '.') }}</h5>
 					</div>
 				</div>
 			</div>
@@ -37,7 +37,7 @@
 									<tr>
 										<th>Data</th>
 										<th>Tipo</th>
-										<th>Cliente/Plano de Conta</th>
+										<th>Venda/Plano de Conta</th>
 										<th>Valor</th>
 									</tr>
 								</thead>
@@ -46,15 +46,23 @@
 									<tr>
 										<td>{{ sale.date|date('d/m/Y') }}</td>
 										<td>Venda</td>
-										<td>{{ sale.client }}</td>
-										<td align="right">R$ {{ sale.total|number_format(2, ',', '.') }}</td>
+										<td><a style="color: green;" href="javascript:window.open('/sale-view/{{ sale.sale_id }}','Venda {{sale.sale_id}}','width=750,height=750')">Venda {{sale.sale_id}} <i class="fa fa-external-link"></i></a></td>
+										<td <a style="color: green;" align="right">R$ {{ sale.portion|number_format(2, ',', '.') }}</td>
+									</tr>
+									{% endfor %}
+									{% for purchase in purchases %}
+									<tr>
+										<td>{{ purchase.date|date('d/m/Y') }}</td>
+										<td>Compra</td>
+										<td><a style="color: red;" href="javascript:window.open('/purchase-view/{{ purchase.purchase_id }}','Compra {{purchase.purchase_id}}','width=750,height=750')">Compra {{purchase.purchase_id}} <i class="fa fa-external-link"></i></a></td>
+										<td style="color: red;" align="right">R$ - {{ purchase.portion|number_format(2, ',', '.') }}</td>
 									</tr>
 									{% endfor %}
 									{% for outlay in outlays %}
 									<tr>
 										<td>{{ outlay.date|date('d/m/Y') }}</td>
 										<td>{{ outlay.outlay }}</td>
-										<td>{{ outlay.plan }}</td>
+										<td style="color: red;">{{ outlay.plan }}</td>
 										{% if outlay.operation == '-' %}
 											<td style="color: red;" align="right">R$ {{ outlay.operation }} {{ outlay.total|number_format(2, ',', '.') }}</td>
 										{% else %}
