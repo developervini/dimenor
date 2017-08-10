@@ -28,9 +28,20 @@ function editSale($id = int)
 {
 	$app = Slim::getInstance();
 	if ($app->request->isGet()) {
-		$app->render('sale/edit.html', array('clients' => ClientController::listClient(), 'banks' => BankController::listBank(), 'sale' => SaleController::findSale($id), 'portions' => PortionSaleController::listPortionSale($id), 'portion_total' => PortionSaleController::getTotalPortionSale($id), 'user_logged' => $_SESSION['user_logged']));
+		$app->render('sale/edit.html', array('banks' => BankController::listBank(), 'sale' => SaleController::findSale($id), 'portions' => PortionSaleController::listPortionSale($id), 'portion_total' => PortionSaleController::getTotalPortionSale($id), 'user_logged' => $_SESSION['user_logged']));
 	}elseif ($app->request->isPut()) {
 		$response = SaleController::editSale($app->request->params());
+		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
+	}
+}
+
+function devolveSale($id = int)
+{
+	$app = Slim::getInstance();
+	if ($app->request->isGet()) {
+		$app->render('sale/devolve.html', array('agreeds' => AgreedController::listAgreed(), 'sale' => SaleController::findSale($id), 'user_logged' => $_SESSION['user_logged']));
+	}elseif ($app->request->isPut()) {
+		$response = SaleController::devolveSale($app->request->params());
 		$app->render('app/message.html', array('response' => $response, 'user_logged' => $_SESSION['user_logged']));
 	}
 }

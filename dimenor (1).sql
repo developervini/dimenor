@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 07-Ago-2017 às 12:58
+-- Generation Time: 10-Ago-2017 às 13:50
 -- Versão do servidor: 10.1.25-MariaDB
 -- PHP Version: 7.0.21
 
@@ -246,7 +246,8 @@ CREATE TABLE `portion_purchase` (
 INSERT INTO `portion_purchase` (`id`, `date`, `bank_id`, `portion`, `purchase_id`) VALUES
 (1, '2017-08-05', 2, 10.00, 2),
 (2, '2017-08-05', 2, 100.00, 2),
-(3, '2017-08-05', 3, 190.00, 2);
+(3, '2017-08-05', 3, 190.00, 2),
+(4, '2017-08-08', 2, 111.00, 7);
 
 -- --------------------------------------------------------
 
@@ -272,12 +273,9 @@ INSERT INTO `portion_sale` (`id`, `date`, `bank_id`, `portion`, `sale_id`) VALUE
 (6, '2017-08-01', 2, 110.00, 13),
 (13, '2017-08-02', 2, 89.50, 8),
 (14, '2017-08-02', 3, 100.00, 8),
-(15, '2017-08-02', 2, 100.00, 6),
-(16, '2017-08-02', 3, 150.00, 6),
-(17, '2017-08-02', 2, 79.00, 6),
-(18, '2017-08-03', 2, 50.00, 6),
 (19, '2017-08-01', 2, 89.50, 7),
-(20, '2017-08-02', 2, 120.00, 7);
+(20, '2017-08-02', 2, 120.00, 7),
+(21, '2017-08-08', 2, 113.00, 16);
 
 -- --------------------------------------------------------
 
@@ -308,7 +306,9 @@ INSERT INTO `purchase` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, 
 (2, 19, 9, 120.00, 2.50, 300.00, 0, '2017-08-05', 300.00, 2, 1),
 (3, 22, 9, 100.00, 9.69, 968.50, 0, '2017-07-24', 968.50, 2, 1),
 (4, 22, 9, 100.00, 10.00, 1000.00, 0, '2017-07-24', 1000.00, 3, 1),
-(5, 22, 9, 130.00, 7.69, 1000.00, 0, '2017-07-26', 1000.00, 2, 1);
+(5, 22, 9, 130.00, 7.69, 1000.00, 0, '2017-07-26', 1000.00, 2, 1),
+(6, 22, 9, 99.00, 1.00, 99.00, 1, '2017-08-08', 0.00, 0, 0),
+(7, 22, 9, 111.00, 1.00, 111.00, 0, '2017-08-08', 111.00, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -320,13 +320,15 @@ CREATE TABLE `sale` (
   `id` int(11) NOT NULL,
   `client_site_user_id` int(11) NOT NULL,
   `agreed_id` int(11) NOT NULL,
-  `poker_chip` int(11) NOT NULL,
+  `returned_agreed_id` int(11) DEFAULT NULL,
+  `returned_poker_chip` float(10,2) NOT NULL,
+  `poker_chip` float(10,2) NOT NULL,
   `poker_chip_value` float(10,2) NOT NULL,
   `poker_chip_total` float(10,2) NOT NULL,
   `pay` int(11) NOT NULL,
   `date` date NOT NULL,
+  `returned_date` date NOT NULL,
   `total` float(10,2) NOT NULL,
-  `bank_id` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -334,15 +336,18 @@ CREATE TABLE `sale` (
 -- Extraindo dados da tabela `sale`
 --
 
-INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `total`, `bank_id`, `status`) VALUES
-(6, 19, 9, 100, 3.79, 379.00, 0, '2017-08-03', 379.00, 2, 1),
-(7, 21, 10, 50, 3.79, 189.50, 0, '2017-08-02', 209.50, 2, 1),
-(8, 19, 9, 50, 3.79, 189.50, 0, '2017-08-02', 189.50, 2, 1),
-(9, 22, 9, 50, 3.79, 189.50, 0, '2017-06-27', 189.50, 2, 1),
-(10, 22, 9, 100, 10.00, 1000.00, 0, '2017-07-24', 1000.00, 2, 1),
-(11, 22, 9, 100, 10.00, 1000.00, 0, '2017-07-20', 1050.00, 2, 1),
-(12, 22, 9, 50, 4.00, 200.00, 0, '2017-07-24', 200.00, 2, 1),
-(13, 22, 9, 100, 1.50, 150.00, 1, '2017-08-01', 150.00, 2, 1);
+INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `returned_agreed_id`, `returned_poker_chip`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `returned_date`, `total`, `status`) VALUES
+(6, 19, 9, NULL, 0.00, 100.00, 3.79, 379.00, 0, '2017-08-03', '0000-00-00', 379.00, 0),
+(7, 21, 10, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-08-02', '0000-00-00', 209.50, 1),
+(8, 19, 9, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-08-02', '0000-00-00', 189.50, 1),
+(9, 22, 9, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-06-27', '0000-00-00', 189.50, 1),
+(10, 22, 9, NULL, 0.00, 100.00, 10.00, 1000.00, 0, '2017-07-24', '0000-00-00', 1000.00, 1),
+(11, 22, 9, NULL, 0.00, 100.00, 10.00, 1000.00, 0, '2017-07-20', '0000-00-00', 1050.00, 1),
+(12, 22, 9, NULL, 0.00, 50.00, 4.00, 200.00, 0, '2017-07-24', '0000-00-00', 200.00, 1),
+(13, 22, 9, NULL, 0.00, 100.00, 1.50, 150.00, 1, '2017-08-01', '0000-00-00', 150.00, 1),
+(14, 22, 9, NULL, 0.00, 100.00, 2.50, 250.00, 1, '2017-08-08', '0000-00-00', 0.00, 0),
+(15, 22, 9, 10, 113.00, 112.00, 1.00, 112.00, 1, '2017-08-08', '2017-08-08', 0.00, 2),
+(16, 22, 9, NULL, 0.00, 113.00, 1.00, 113.00, 0, '2017-08-08', '0000-00-00', 113.00, 1);
 
 -- --------------------------------------------------------
 
@@ -489,7 +494,7 @@ ALTER TABLE `purchase`
 ALTER TABLE `sale`
   ADD PRIMARY KEY (`id`),
   ADD KEY `client_site_user_id` (`client_site_user_id`),
-  ADD KEY `bank_id` (`bank_id`);
+  ADD KEY `returned_agreed_id` (`returned_agreed_id`);
 
 --
 -- Indexes for table `site`
@@ -556,22 +561,22 @@ ALTER TABLE `plan`
 -- AUTO_INCREMENT for table `portion_purchase`
 --
 ALTER TABLE `portion_purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `portion_sale`
 --
 ALTER TABLE `portion_sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `site`
 --

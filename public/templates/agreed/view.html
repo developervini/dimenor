@@ -71,8 +71,10 @@
 								<td>
 									{% if sale.status == 0 %}
 									<span class="label label-danger">Pendente</span>
-									{% else %}
+									{% elseif sale.status == 1 %}
 									<span class="label label-success">Faturado</span>
+									{% elseif sale.status == 2 %}
+									<span class="label label-warning">Devolvido</span>
 									{% endif %}
 								</td>
 								<td>{{ sale.id }}</td>

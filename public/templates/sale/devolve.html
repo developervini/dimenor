@@ -4,10 +4,10 @@
   <div class="container-fluid">
     <div class="card">
       <div class="header">
-        <h4 class="title">Finalizar Venda</h4>
+        <h4 class="title">Devolver Venda</h4>
       </div>
       <div class="content">
-        <form action="/sale-edit/{{ sale.id }}" method="POST" id="registerFormValidation">
+        <form action="/sale-devolve/{{ sale.id }}" method="POST" id="registerFormValidation">
           <input type="hidden" name="_METHOD" value="PUT"/>
 					<input type="hidden" name="id" value="{{ sale.id }}"/>
           <div class="row">
@@ -20,40 +20,23 @@
               <p>Valor Ficha <b>R$ {{ sale.poker_chip_value|number_format(2, ',', '.') }}</b></p>
               <p>Total <b>R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</b></p>
             </div>
-            <div class="col-md-6 form-group">
-              <p>Parcelas</p>
-							<table class="table table-striped table-no-bordered table-hover">
-								<tr>
-									<th>Data</th>
-									<th>Valor</th>
-									<th>Banco</th>
-								</tr>
-	              {% for portion in portions %}
-								<tr>
-	                <td><p>{{ portion.date|date('d/m/Y')}}</p></td>
-									<td><p>R$ {{ portion.portion|number_format(2, ',', '.') }}</p></td>
-									<td><p>{{portion.bank}}</p></td>
-								</tr>
-	              {% endfor %}
-							</table>
-            </div>
           </div>
           <div class="row">
             <div class="col-md-2 form-group">
               <label>Data</label>
-              <input type="date" name="date" class="form-control" required="true" value="{{ 'now'|date('Y-m-d') }}">
+              <input type="date" name="returned_date" class="form-control" required="true" value="{{ 'now'|date('Y-m-d') }}">
             </div>
             <div class="col-md-2 form-group">
-              <label>Conta</label>
-              <select class="form-control" name="bank_id" required="true">
-                {% for bank in banks %}
-                <option value="{{ bank.id }}">{{ bank.bank }}</option>
+              <label>Conveniado</label>
+              <select class="form-control" name="returned_agreed_id" required="true">
+                {% for agreed in agreeds %}
+                <option value="{{ agreed.id }}">{{ agreed.agreed }}</option>
                 {% endfor %}
               </select>
             </div>
             <div class="col-md-2 form-group">
-              <label>Valor</label>
-              <input type="number" name="total" value="{{ sale.poker_chip_total - portion_total.total }}" class="form-control" required="true">
+              <label>Fichas</label>
+              <input type="number" name="returned_poker_chip" value="{{ sale.poker_chip }}" class="form-control" required="true">
             </div>
           </div>
           <div class="row">
