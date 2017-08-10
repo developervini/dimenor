@@ -5,7 +5,7 @@ class SaleController
 	public static function findSale($id = int)
 	{
 		try {
-			return Sale::where('sale.id', $id)->join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->first();
+			return Sale::where('sale.id', $id)->leftJoin('agreed as a', 'a.id', '=', 'returned_agreed_id')->join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->join('site as s', 's.id', '=', 'cs.site_id')->select('sale.*', 'c.client', 's.site', 'csu.username', 'a.agreed')->first();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -89,7 +89,7 @@ class SaleController
 	public static function listSaleAgreed($agreed_id = int)
 	{
 		try {
-			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->select('sale.*', 'c.client')->where('sale.agreed_id', $agreed_id)->orWhere('sale.returned_agreed_id', $agreed_id)->orderBy('date', 'DESC')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -139,13 +139,42 @@ class SaleController
 			$Sale->poker_chip_total = $data['poker_chip_total'];
 			$Sale->pay = $data['pay'];
 			$Sale->date = $data['date'];
-			$Sale->total = $data['total'];
 			if($Sale->pay == 0){
 				$Sale->status = 1;
 			}else{
 				$Sale->status = 0;
 			}
 			$Sale->save();
+
+			if($Sale->pay == 0){
+				$PortionSale = new PortionSale();
+				$PortionSale->date = $data['date'];
+				$PortionSale->portion = $data['total'];
+				$PortionSale->bank_id = $data['bank_id'];
+				$PortionSale->sale_id = $Sale->id;
+				$PortionSale->save();
+
+				$PortionSaleTotal = PortionSaleController::getTotalPortionSale($Sale->id);
+
+				if($PortionSaleTotal->total >= $Sale->poker_chip_total){
+					$Sale->date = $data['date'];
+					$Sale->total = $PortionSaleTotal->total;
+					$Sale->save();
+
+					$data = array(
+						'msg' => 'Venda inserida e faturada com sucesso',
+						'class' => 'success',
+						'route' => '/sale-list/' . $Sale->status
+					);
+				}
+
+			}else {
+				$data = array(
+					'msg' => 'Venda inserida com sucesso',
+					'class' => 'success',
+					'route' => '/sale-list/' . $Sale->status
+				);
+			}
 
 			return $data;
 		} catch (Exception $ex) {
@@ -188,6 +217,34 @@ class SaleController
 					'route' => '/sale-list/' . $Sale->status
 				);
 			}
+
+			return $data;
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
+	public static function devolveSale($data = array())
+	{
+		try {
+			$Sale = Sale::find($data['id']);
+			$Sale->returned_agreed_id = $data['returned_agreed_id'];
+			$Sale->returned_poker_chip = $data['returned_poker_chip'];
+			$Sale->returned_date = $data['returned_date'];
+			$Sale->status = 2;
+			$Sale->save();
+
+			$data = array(
+				'msg' => 'Venda devolvida com sucesso',
+				'class' => 'success',
+				'route' => '/sale-list/' . $Sale->status
+			);
+
 
 			return $data;
 		} catch (Exception $ex) {

@@ -11,11 +11,21 @@
 					<input type="hidden" name="id" value="{{ sale.id }}"/>
           <div class="row">
             <div class="col-md-6 form-group">
-              <p>ID {{ sale.id }}</p>
-              <p>{{ sale.client }}</p>
-              <p>Nº de Fichas {{ sale.poker_chip }}</p>
-              <p>Valor Ficha R$ {{ sale.poker_chip_value|number_format(2, ',', '.') }}</p>
-              <p>Total R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</p>
+              <p>ID <b>{{ sale.id }}</b></p>
+              <p>Data <b>{{ sale.date|date('d/m/Y') }}</b></p>
+              <p>Cliente <b>{{ sale.client }}</b></p>
+              <p>Site <b>{{ sale.site }}</b></p>
+              <p>Nick <b>{{ sale.username }}</b></p>
+              <p>Nº de Fichas <b>{{ sale.poker_chip }}</b></p>
+              <p>Valor Ficha <b>R$ {{ sale.poker_chip_value|number_format(2, ',', '.') }}</b></p>
+              <p>Total <b>R$ {{ sale.poker_chip_total|number_format(2, ',', '.') }}</b></p>
+              {% if sale.status == 2 %}
+              <br>
+              <p>Informações de devolução</p>
+              <p>Data <b>{{ sale.returned_date|date('d/m/Y') }}</b></p>
+              <p>Conveniado <b>{{ sale.agreed }}</b></p>
+              <p>Nº de Fichas <b>{{ sale.returned_poker_chip }}</b></p>
+              {% endif %}
             </div>
             <div class="col-md-6 form-group">
               <p>Parcelas</p>

@@ -115,6 +115,8 @@ $app->group('/sale', 'auth', function() use ($app){
 	$app->post('-new', 'newSale');
 	$app->get('-edit/:id', 'editSale');
 	$app->put('-edit/:id', 'editSale');
+	$app->get('-devolve/:id', 'devolveSale');
+	$app->put('-devolve/:id', 'devolveSale');
 	$app->get('-view/:id', 'viewSale');
 	$app->put('-status/:id', 'statusSale');
 });
