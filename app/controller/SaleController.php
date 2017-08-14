@@ -72,6 +72,20 @@ class SaleController
 		}
 	}
 
+	public static function getSaleDevolveAgreed($agreed_id = int)
+	{
+		try {
+			return Sale::selectRaw('SUM(returned_poker_chip) as total')->where('returned_agreed_id', $agreed_id)->first();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
 	public static function getTotalSaleAgreed($agreed_id = int)
 	{
 		try {

@@ -13,7 +13,7 @@
 						<h5>{{ agreed.phone }}</h5>
 						<h5>{{ agreed.facebook }}</h5>
 						<h5>{{ agreed.observation }}</h5>
-						{% set total = agreed.balance + (-totalSale.total) + totalPurchase.total %}
+						{% set total = agreed.balance + (-totalSale.total) + totalPurchase.total + devolveAgreed.total %}
 						<h5>Saldo {{ total|number_format(2, ',', '.') }}</h5>
 					</div>
 				</div>
@@ -80,7 +80,11 @@
 								<td>{{ sale.id }}</td>
 								<td>{{ sale.date|date('d/m/Y') }}</td>
 								<td>{{ sale.client }}</td>
+								{% if sale.status == 2 %}
+								<td>{{ sale.returned_poker_chip|number_format(2, ',', '.') }}</td>
+								{% else %}
 								<td>{{ sale.poker_chip|number_format(2, ',', '.') }}</td>
+								{% endif %}
 								<td>
 									<div class="btn-group">
 										{% if sale.status == 1 %}
