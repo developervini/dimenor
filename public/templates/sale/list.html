@@ -46,7 +46,8 @@
                         <button type="submit" onclick="statusSale({{ sale.id }}, 'tornar pendente')" title="Cancelar Faturamento" class="btn btn-danger btn-fill"><i class="fa fa-remove"></i></button>
 												<a href="/sale-view/{{ sale.id }}" title="Visualizar" class="btn btn-success btn-fill"><i class="fa fa-eye"></i></a>
 												{% elseif sale.status == 0 %}
-                        <a href="/sale-edit/{{ sale.id }}" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></a>
+												<a href="/sale-edit/{{ sale.id }}" title="Faturar" class="btn btn-success btn-fill"><i class="fa fa-check"></i></a>
+												<a href="/sale-devolve/{{ sale.id }}" title="Devolver" class="btn btn-warning btn-fill"><i class="fa fa-reply"></i></a>
                         {% endif %}
 											</div>
 										</td>
