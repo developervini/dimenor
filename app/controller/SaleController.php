@@ -72,6 +72,34 @@ class SaleController
 		}
 	}
 
+	public static function getTotalSaleClient($client_id = int)
+	{
+		try {
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->selectRaw('SUM(total) as total')->where('c.id', $client_id)->where('status', 1)->first();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
+	public static function chipSaleClient($client_id = int)
+	{
+		try {
+			return Sale::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('client as c', 'c.id', '=', 'cs.client_id')->selectRaw('SUM(poker_chip) as total')->where('c.id', $client_id)->where('status', 1)->first();
+		} catch (Exception $ex) {
+			$data = array(
+				'msg' => $ex->getMessage(),
+				'class' => 'error',
+				'route' => '/error-log'
+			);
+			return $data;
+		}
+	}
+
 	public static function getSaleDevolveAgreed($agreed_id = int)
 	{
 		try {
