@@ -1,4 +1,86 @@
 {% extends "menu.html" %} {% block body %}
+<style>
+	.funkyradio div {
+		clear: both;
+		overflow: hidden;
+	}
+
+	.funkyradio label {
+		width: 100%;
+		border-radius: 3px;
+		border: 1px solid #D1D3D4;
+		font-weight: normal;
+	}
+
+	.funkyradio input[type="radio"]:empty,
+	.funkyradio input[type="checkbox"]:empty {
+		display: none;
+	}
+
+	.funkyradio input[type="radio"]:empty~label,
+	.funkyradio input[type="checkbox"]:empty~label {
+		position: relative;
+		line-height: 2.5em;
+		text-indent: 3.25em;
+		margin-top: 2em;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.funkyradio input[type="radio"]:empty~label:before,
+	.funkyradio input[type="checkbox"]:empty~label:before {
+		position: absolute;
+		display: block;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		content: '';
+		width: 2.5em;
+		background: #D1D3D4;
+		border-radius: 3px 0 0 3px;
+	}
+
+	.funkyradio input[type="radio"]:hover:not(:checked)~label,
+	.funkyradio input[type="checkbox"]:hover:not(:checked)~label {
+		color: #888;
+	}
+
+	.funkyradio input[type="radio"]:hover:not(:checked)~label:before,
+	.funkyradio input[type="checkbox"]:hover:not(:checked)~label:before {
+		content: '\2714';
+		text-indent: .9em;
+		color: #C2C2C2;
+	}
+
+	.funkyradio input[type="radio"]:checked~label,
+	.funkyradio input[type="checkbox"]:checked~label {
+		color: #777;
+	}
+
+	.funkyradio input[type="radio"]:checked~label:before,
+	.funkyradio input[type="checkbox"]:checked~label:before {
+		content: '\2714';
+		text-indent: .9em;
+		color: #333;
+		background-color: #ccc;
+	}
+
+	.funkyradio input[type="radio"]:focus~label:before,
+	.funkyradio input[type="checkbox"]:focus~label:before {
+		box-shadow: 0 0 0 3px #999;
+	}
+
+	.funkyradio-info input[type="radio"]:checked~label:before,
+	.funkyradio-info input[type="checkbox"]:checked~label:before {
+		color: #fff;
+		background-color: #5bc0de;
+	}
+
+</style>
+
 <div class="content">
 	<div class="container-fluid">
 		<div class="row">
@@ -18,8 +100,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-6">
 				<div class="card">
 					<div class="header">
 						<h4 class="title">Sites <a type="button" href="/client-site-new/{{ client.id }}" title="Cadastrar" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
@@ -54,12 +134,89 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- <div class="row">
-			<div class="col-md-12">
+			<div class="col-sm-6">
 				<div class="card">
 					<div class="header">
-						<h4 class="title">Extrato</h4>
+						<h4 class="title">Conversão de Saldo</h4>
+					</div>
+					<div class="content">
+						<form>
+							<div class="row">
+								<div class="col-sm-3 form-group">
+									<label>Conversão</label>
+									<div class="funkyradio">
+										<div class="funkyradio-info">
+											<input type="radio" name="radio" id="radio1" />
+											<label for="radio1">U$ -> R$</label>
+										</div>
+										<div class="funkyradio-info">
+											<input type="radio" name="radio" id="radio2" />
+											<label for="radio2">R$ -> U$</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-9 form-group" align="center">
+										<label>Saldo</label>
+										{% set saldoUs = 0 %} 
+										{% for chip in chipFlows %}
+											{% if chip.operation == '+' %} 
+												{% set saldoUs = saldoUs + chip.total %}
+											{% elseif chip.operation == '-' %} 
+												{% set saldoUs = saldoUs - chip.total %}
+											{% endif %}
+										{% endfor %}
+
+										{% if saldoUs >= 0 %}
+										<h2 style="color: green">U$ {{ saldoUs|number_format(2, ',', '.') }}</h2>
+										{% else %}
+										<h2 style="color: red">U$ {{ saldoUs|number_format(2, ',', '.') }}</h2>
+										{% endif %}
+
+
+										{% set saldoRs = 0 %} 
+										{% for money in moneyFlows %}
+											{% if money.operation == '+' %} 
+												{% set saldoRs = saldoRs + money.total %}
+											{% elseif money.operation == '-' %} 
+												{% set saldoRs = saldoRs - money.total %}
+											{% endif %}
+										{% endfor %}
+
+										{% if saldoRs >= 0 %}
+										<h2 style="color: green">R$ {{ saldoRs|number_format(2, ',', '.') }}</h2>
+										{% else %}
+										<h2 style="color: red">R$ {{ saldoRs|number_format(2, ',', '.') }}</h2>
+										{% endif %}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3 form-group">
+									<label>Valor</label>
+									<input type="number" name="total" class="form-control">
+								</div>
+							</div>
+							<div class="row">	
+								<div class="col-md-12">
+									<div class="form-group pull-right">
+										<button type="submit" class="btn btn-fill btn-success">Salvar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Envio e Recebimento de Fichas
+							<a type="button" href="#" onclick="listClientSite({{client.id}})" title="Cadastrar" data-toggle="modal" data-target="#chipFlow"
+							 class="btn btn-social btn-round btn-default btn-fill">
+								<i class="fa fa-plus"></i>
+							</a>
+						</h4>
 					</div>
 					<div class="content">
 						<div class="table-responsive">
@@ -67,42 +224,31 @@
 								<thead>
 									<tr>
 										<th>Data</th>
-										<th>Descrição</th>
-										<th>Tipo</th>
-										<th>Fichas</th>
-										<th>Valor</th>
+										<th>Cliente</th>
+										<th>Conveniado</th>
+										<th>Fichas Recebidas</th>
+										<th>Fichas Enviadas</th>
+										<th>Saldo</th>
 									</tr>
 								</thead>
 								<tbody>
-									{% for sale in sales %}
+									{% set saldo = 0 %} {% for chip in chipFlows %}
 									<tr>
-										<td>{{ sale.date|date('d/m/Y') }}</td>
-										{% if sale.status == 0 %}
-											<td>Venda Pendente</td>
-											<td><a style="color: red;" href="javascript:window.open('/sale-edit/{{ sale.id }}','Venda {{sale.id}}','width=750,height=750')">Venda {{sale.id}} <i class="fa fa-external-link"></i></a></td>
-										{% elseif sale.status == 1 %}
-											<td>Venda Finalizada</td>
-											<td><a style="color: red;" href="javascript:window.open('/sale-view/{{ sale.id }}','Venda {{sale.id}}','width=750,height=750')">Venda {{sale.id}} <i class="fa fa-external-link"></i></a></td>
+										<td>{{ chip.date|date('d/m/Y H:i:s') }}</td>
+										<td>{{ chip.client_id }}</td>
+										<td>{{ chip.agreed_id }}</td>
+										{% if chip.operation == '+' %} {% set saldo = saldo + chip.total %}
+										<td style="color: green">$ {{ chip.total|number_format(2, ',', '.') }}</td>
+										<td></td>
+										{% elseif chip.operation == '-' %} {% set saldo = saldo - chip.total %}
+										<td></td>
+										<td style="color: red">$ {{ chip.total|number_format(2, ',', '.') }}</td>
+										{% endif %} 
+										{% if saldo >= 0 %}
+										<td style="color: green">$ {{ saldo|number_format(2, ',', '.') }}</td>
 										{% else %}
-											<td>Venda Devolvida</td>
-											<td><a style="color: red;" href="javascript:window.open('/sale-view/{{ sale.id }}','Venda {{sale.id}}','width=750,height=750')">Venda {{sale.id}} <i class="fa fa-external-link"></i></a></td>
+										<td style="color: red">$ {{ saldo|number_format(2, ',', '.') }}</td>
 										{% endif %}
-										<td>{{sale.poker_chip}}</td>
-										<td <a style="color: red;" align="right">- R$ {{ sale.total|number_format(2, ',', '.') }}</td>
-									</tr>
-									{% endfor %}
-									{% for purchase in purchases %}
-									<tr>
-										<td>{{ purchase.date|date('d/m/Y') }}</td>
-										{% if purchase.status == 0 %}
-											<td>Compra Pendente</td>
-											<td><a style="color: green;" href="javascript:window.open('/purchase-edit/{{ purchase.id }}','Compra {{purchase.id}}','width=750,height=750')">Compra {{purchase.id}} <i class="fa fa-external-link"></i></a></td>
-										{% else %}
-											<td>Compra Finalizada</td>
-											<td><a style="color: green;" href="javascript:window.open('/purchase-view/{{ purchase.id }}','Compra {{purchase.id}}','width=750,height=750')">Compra {{purchase.id}} <i class="fa fa-external-link"></i></a></td>
-										{% endif %}
-										<td>{{purchase.poker_chip}}</td>
-										<td style="color: green;" align="right">R$ {{ purchase.total|number_format(2, ',', '.') }}</td>
 									</tr>
 									{% endfor %}
 								</tbody>
@@ -111,25 +257,50 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-12">
 				<div class="card">
 					<div class="header">
-						<h4 class="title">Envio e Recebimento de Fichas <a type="button" href="#" title="Cadastrar" onclick="newChipFlow();" class="btn btn-social btn-round btn-default btn-fill"><i class="fa fa-plus"></i></a></h4>
+						<h4 class="title">Envio e Recebimento de R$
+							<a type="button" href="#" onclick="listClientSite({{client.id}})" title="Cadastrar" data-toggle="modal" data-target="#moneyFlow"
+							 class="btn btn-social btn-round btn-default btn-fill">
+								<i class="fa fa-plus"></i>
+							</a>
+						</h4>
 					</div>
 					<div class="content">
-						<div class="row">
-
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="card">
-					<div class="content">
-						<div class="row">
-
+						<div class="table-responsive">
+							<table class="table table-striped table-no-bordered table-hover displaynosearch" cellspacing="0" width="100%" style="width:100%">
+								<thead>
+									<tr>
+										<th>Data</th>
+										<th>Banco</th>
+										<th>R$ Recebidos</th>
+										<th>R$ Enviados</th>
+										<th>Saldo</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% set saldo = 0 %} {% for money in moneyFlows %}
+									<tr>
+										<td>{{ money.date|date('d/m/Y H:i:s') }}</td>
+										<td>{{ money.bank_id }}</td>
+										{% if money.operation == '+' %} {% set saldo = saldo + money.total %}
+										<td style="color: green">$ {{ money.total|number_format(2, ',', '.') }}</td>
+										<td></td>
+										{% elseif money.operation == '-' %} {% set saldo = saldo - money.total %}
+										<td></td>
+										<td style="color: red">$ {{ money.total|number_format(2, ',', '.') }}</td>
+										{% endif %} {% if saldo >= 0 %}
+										<td style="color: green">$ {{ saldo|number_format(2, ',', '.') }}</td>
+										{% else %}
+										<td style="color: red">$ {{ saldo|number_format(2, ',', '.') }}</td>
+										{% endif %}
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -137,25 +308,100 @@
 		</div>
 	</div>
 </div>
-<script>
-	function newChipFlow()
-	{
-		listClientSite('{{client.id}}');
-		var html = '<form method="POST" action="/chip-flow-new"> <div class="row"> <div class="col-md-12 form-group"> <label>Operação</label> <select class="form-control" name="operation" required="true"> <option value="-">Enviar</option> <option value="+">Receber</option> </select> </div> </div> <div class="row"> <div class="col-md-12 form-group"> <label>Sites do Cliente</label> <select class="form-control" name="site_id" id="site_id" onchange="listClientSiteUser();" required="true"> </select> </div> <div class="col-md-12 form-group"> <label>Nicks do Site</label> <select class="form-control" name="client_site_user_id" id="client_site_user_id" required="true"> </select> </div> </div> <div class="row"> <div class="col-md-12 form-group"> <label>Conveniados para o Site</label> <select class="form-control" name="agreed_id" id="agreed_id" required="true"> </select> </div> <div class="col-md-12 form-group"> <label>Fichas</label> <input type="number" name="total" class="form-control" required="true"> </div> </div> <br> <div class="row"> <div class="col-sm-12"> <div class="pull-right"> <button type="submit" class="btn btn-fill btn-success"> Salvar</button> </div> </div> </div> </form>';
+
+<div class="modal fade in" id="chipFlow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form method="POST" action="/chip-flow-new">
+				<input type="hidden" name="client_id" value="{{ client.id }}">
+				<input type="hidden" name="date" value="{{ 'now'|date('Y-m-d H:i:s') }}">
+				<div class="modal-header">
+					<h4 class="modal-title">Enviar/Receber Fichas</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<label>Operação</label>
+							<select class="form-control" name="operation" required="true"> 
+								<option value="-">Enviar</option> 
+								<option value="+">Receber</option> 
+							</select>
+						</div>
+						<div class="col-md-12 form-group">
+							<label>Sites do Cliente</label>
+							<select class="form-control" id="site_id" onchange="listClientSiteUser();" required="true"> </select>
+						</div>
+						<div class="col-md-12 form-group">
+							<label>Nicks do Site</label>
+							<select class="form-control" name="client_site_user_id" id="client_site_user_id" required="true"><select>
+							</div>
 		
-		swal({  title: "Enviar/Receber Fichas",
-			html: html,
-			showCancelButton: false, 
-			showConfirmButton: false
+							<div class="col-md-12 form-group">
+								<label>Conveniados para o Site</label>
+								<select class="form-control" name="agreed_id" id="agreed_id" required="true"> </select>
+						</div>
+						<div class="col-md-12 form-group">
+							<label>Fichas</label>
+							<input type="number" name="total" class="form-control" required="true">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-fill" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success btn-fill">Salvar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
-		});
-	}
+<div class="modal fade in" id="moneyFlow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form method="POST" action="/money-flow-new">
+				<input type="hidden" name="client_id" value="{{ client.id }}">
+				<input type="hidden" name="date" value="{{ 'now'|date('Y-m-d H:i:s') }}">
+				<div class="modal-header">
+					<h4 class="modal-title">Enviar/Receber R$</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<label>Operação</label>
+							<select class="form-control" name="operation" required="true"> 
+								<option value="-">Enviar</option> 
+								<option value="+">Receber</option> 
+							</select>
+						</div>
+						<div class="col-md-12 form-group">
+							<label>Conta</label>
+							<select class="form-control" name="bank_id" required="true">
+								{% for bank in banks %}
+								<option value="{{ bank.id }}">{{ bank.bank }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-12 form-group">
+							<label>R$</label>
+							<input type="number" name="total" class="form-control" required="true">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-fill" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success btn-fill">Salvar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
+<script>
 	function listClientSite(id) {
 		$.ajax({
 			type: "GET",
 			url: "/client-site-list-json/" + id,
-			success: function(data) {
+			success: function (data) {
 				data = JSON.parse(data);
 				var sites = $('#site_id');
 				sites.empty();
@@ -174,11 +420,11 @@
 
 	function listClientSiteUser() {
 		var id = '{{client.id}}';
-		var site = $( "select#site_id option:selected" ).val();
+		var site = $("select#site_id option:selected").val();
 		$.ajax({
 			type: "GET",
 			url: "/client-site-user-list-json/" + id + '/' + site,
-			success: function(data) {
+			success: function (data) {
 				data = JSON.parse(data);
 				var users_site = $('#client_site_user_id');
 				users_site.empty();
@@ -195,11 +441,11 @@
 	}
 
 	function listAgreed() {
-		var id = $( "select#site_id option:selected" ).val();
+		var id = $("select#site_id option:selected").val();
 		$.ajax({
 			type: "GET",
 			url: "/agreed-site-list-json/" + id,
-			success: function(data) {
+			success: function (data) {
 				data = JSON.parse(data);
 				var agreeds = $('#agreed_id');
 				agreeds.empty();
@@ -213,5 +459,6 @@
 			}
 		});
 	}
+
 </script>
 {% endblock %}

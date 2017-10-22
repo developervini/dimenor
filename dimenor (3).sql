@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Ago-2017 às 13:50
+-- Generation Time: 23-Out-2017 às 00:25
 -- Versão do servidor: 10.1.25-MariaDB
 -- PHP Version: 7.0.21
 
@@ -95,6 +95,36 @@ INSERT INTO `bank` (`id`, `bank`, `account`, `balance`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `chip_flow`
+--
+
+CREATE TABLE `chip_flow` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `client_site_user_id` int(11) NOT NULL,
+  `agreed_id` int(11) NOT NULL,
+  `total` float(10,2) NOT NULL,
+  `total_converted` float(10,2) NOT NULL,
+  `operation` char(1) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `chip_flow`
+--
+
+INSERT INTO `chip_flow` (`id`, `date`, `client_id`, `client_site_user_id`, `agreed_id`, `total`, `total_converted`, `operation`, `status`) VALUES
+(3, '2017-10-09 21:06:03', 3, 19, 9, 234214.00, 0.00, '-', 0),
+(4, '2017-10-09 21:15:47', 3, 19, 9, 100.00, 0.00, '+', 0),
+(5, '2017-10-09 21:35:16', 3, 19, 9, 233214.00, 0.00, '-', 0),
+(6, '2017-10-09 21:35:44', 3, 19, 9, 466328.00, 0.00, '+', 0),
+(7, '2017-10-09 21:36:09', 3, 19, 9, 11000.00, 0.00, '-', 0),
+(8, '2017-10-09 21:36:24', 3, 19, 9, 22000.00, 0.00, '+', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `client`
 --
 
@@ -104,6 +134,7 @@ CREATE TABLE `client` (
   `phone` varchar(25) NOT NULL,
   `facebook` varchar(150) NOT NULL,
   `observation` text NOT NULL,
+  `balance` float(10,2) NOT NULL,
   `active` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -111,9 +142,9 @@ CREATE TABLE `client` (
 -- Extraindo dados da tabela `client`
 --
 
-INSERT INTO `client` (`id`, `client`, `phone`, `facebook`, `observation`, `active`) VALUES
-(3, 'Tiago Nahin Fauth', '(51) 99990-9499', '', 'credito liberado: R$ 300,00\r\nconta BB: ag 06289 - cc 315400 - propria\r\n', 0),
-(4, 'Lucas Fauth', '(51) 99350-3940', '', '', 0);
+INSERT INTO `client` (`id`, `client`, `phone`, `facebook`, `observation`, `balance`, `active`) VALUES
+(3, 'Tiago Nahin Fauth', '(51) 99990-9499', '', 'credito liberado: R$ 300,00\r\nconta BB: ag 06289 - cc 315400 - propria\r\n', 0.00, 0),
+(4, 'Lucas Fauth', '(51) 99350-3940', '', '', 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -183,6 +214,31 @@ INSERT INTO `coin` (`id`, `coin`, `percentage`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `money_flow`
+--
+
+CREATE TABLE `money_flow` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `total` float(10,2) NOT NULL,
+  `total_converted` float(10,2) NOT NULL,
+  `operation` char(1) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `money_flow`
+--
+
+INSERT INTO `money_flow` (`id`, `date`, `client_id`, `bank_id`, `total`, `total_converted`, `operation`, `status`) VALUES
+(1, '2017-10-16 21:11:36', 3, 2, 1000.00, 0.00, '+', 0),
+(2, '2017-10-22 19:21:32', 3, 2, 500.00, 0.00, '-', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `outlay`
 --
 
@@ -247,7 +303,9 @@ INSERT INTO `portion_purchase` (`id`, `date`, `bank_id`, `portion`, `purchase_id
 (1, '2017-08-05', 2, 10.00, 2),
 (2, '2017-08-05', 2, 100.00, 2),
 (3, '2017-08-05', 3, 190.00, 2),
-(4, '2017-08-08', 2, 111.00, 7);
+(4, '2017-08-08', 2, 111.00, 7),
+(5, '2017-08-29', 2, 2500.00, 8),
+(6, '2017-08-29', 2, 99.00, 6);
 
 -- --------------------------------------------------------
 
@@ -275,7 +333,9 @@ INSERT INTO `portion_sale` (`id`, `date`, `bank_id`, `portion`, `sale_id`) VALUE
 (14, '2017-08-02', 3, 100.00, 8),
 (19, '2017-08-01', 2, 89.50, 7),
 (20, '2017-08-02', 2, 120.00, 7),
-(21, '2017-08-08', 2, 113.00, 16);
+(21, '2017-08-08', 2, 113.00, 16),
+(22, '2017-08-29', 2, 379.00, 6),
+(23, '2017-08-29', 2, 100.00, 17);
 
 -- --------------------------------------------------------
 
@@ -307,8 +367,9 @@ INSERT INTO `purchase` (`id`, `client_site_user_id`, `agreed_id`, `poker_chip`, 
 (3, 22, 9, 100.00, 9.69, 968.50, 0, '2017-07-24', 968.50, 2, 1),
 (4, 22, 9, 100.00, 10.00, 1000.00, 0, '2017-07-24', 1000.00, 3, 1),
 (5, 22, 9, 130.00, 7.69, 1000.00, 0, '2017-07-26', 1000.00, 2, 1),
-(6, 22, 9, 99.00, 1.00, 99.00, 1, '2017-08-08', 0.00, 0, 0),
-(7, 22, 9, 111.00, 1.00, 111.00, 0, '2017-08-08', 111.00, 0, 1);
+(6, 22, 9, 99.00, 1.00, 99.00, 1, '2017-08-29', 99.00, 0, 1),
+(7, 22, 9, 111.00, 1.00, 111.00, 0, '2017-08-08', 111.00, 0, 1),
+(8, 19, 9, 1000.00, 2.00, 2000.00, 1, '2017-08-29', 2500.00, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -337,7 +398,7 @@ CREATE TABLE `sale` (
 --
 
 INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `returned_agreed_id`, `returned_poker_chip`, `poker_chip`, `poker_chip_value`, `poker_chip_total`, `pay`, `date`, `returned_date`, `total`, `status`) VALUES
-(6, 19, 9, NULL, 0.00, 100.00, 3.79, 379.00, 0, '2017-08-03', '0000-00-00', 379.00, 0),
+(6, 19, 9, NULL, 0.00, 100.00, 3.79, 379.00, 0, '2017-08-29', '0000-00-00', 379.00, 1),
 (7, 21, 10, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-08-02', '0000-00-00', 209.50, 1),
 (8, 19, 9, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-08-02', '0000-00-00', 189.50, 1),
 (9, 22, 9, NULL, 0.00, 50.00, 3.79, 189.50, 0, '2017-06-27', '0000-00-00', 189.50, 1),
@@ -347,7 +408,9 @@ INSERT INTO `sale` (`id`, `client_site_user_id`, `agreed_id`, `returned_agreed_i
 (13, 22, 9, NULL, 0.00, 100.00, 1.50, 150.00, 1, '2017-08-01', '0000-00-00', 150.00, 1),
 (14, 22, 9, NULL, 0.00, 100.00, 2.50, 250.00, 1, '2017-08-08', '0000-00-00', 0.00, 0),
 (15, 22, 9, 10, 113.00, 112.00, 1.00, 112.00, 1, '2017-08-08', '2017-08-08', 0.00, 2),
-(16, 22, 9, NULL, 0.00, 113.00, 1.00, 113.00, 0, '2017-08-08', '0000-00-00', 113.00, 1);
+(16, 22, 9, NULL, 0.00, 113.00, 1.00, 113.00, 0, '2017-08-08', '0000-00-00', 113.00, 1),
+(17, 19, 9, NULL, 0.00, 100.00, 1.00, 100.00, 0, '2017-08-29', '0000-00-00', 100.00, 1),
+(18, 19, 9, 9, 820.00, 820.00, 1.22, 1000.00, 1, '2017-08-29', '2017-08-29', 0.00, 2);
 
 -- --------------------------------------------------------
 
@@ -422,6 +485,15 @@ ALTER TABLE `bank`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `chip_flow`
+--
+ALTER TABLE `chip_flow`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_site_user_id` (`client_site_user_id`),
+  ADD KEY `agreed_id` (`agreed_id`),
+  ADD KEY `client_id` (`client_id`);
+
+--
 -- Indexes for table `client`
 --
 ALTER TABLE `client`
@@ -447,6 +519,14 @@ ALTER TABLE `client_site_user`
 --
 ALTER TABLE `coin`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `money_flow`
+--
+ALTER TABLE `money_flow`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `bank_id` (`bank_id`);
 
 --
 -- Indexes for table `outlay`
@@ -528,6 +608,11 @@ ALTER TABLE `agreed_site`
 ALTER TABLE `bank`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `chip_flow`
+--
+ALTER TABLE `chip_flow`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
@@ -548,6 +633,11 @@ ALTER TABLE `client_site_user`
 ALTER TABLE `coin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `money_flow`
+--
+ALTER TABLE `money_flow`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `outlay`
 --
 ALTER TABLE `outlay`
@@ -561,22 +651,22 @@ ALTER TABLE `plan`
 -- AUTO_INCREMENT for table `portion_purchase`
 --
 ALTER TABLE `portion_purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `portion_sale`
 --
 ALTER TABLE `portion_sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `site`
 --
@@ -603,6 +693,12 @@ ALTER TABLE `agreed`
 ALTER TABLE `agreed_site`
   ADD CONSTRAINT `agreed_site_ibfk_1` FOREIGN KEY (`agreed_id`) REFERENCES `agreed` (`id`),
   ADD CONSTRAINT `agreed_site_ibfk_2` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`);
+
+--
+-- Limitadores para a tabela `chip_flow`
+--
+ALTER TABLE `chip_flow`
+  ADD CONSTRAINT `chip_flow_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`);
 
 --
 -- Limitadores para a tabela `client_site`

@@ -130,3 +130,11 @@ $app->group('/purchase', 'auth', function() use ($app){
 	$app->get('-view/:id', 'viewPurchase');
 	$app->put('-status/:id', 'statusPurchase');
 });
+
+$app->group('/chip-flow', 'auth', function() use ($app){
+	$app->post('-new', 'newChipFlow');
+});
+
+$app->group('/money-flow', 'auth', function() use ($app){
+	$app->post('-new', 'newMoneyFlow');
+});

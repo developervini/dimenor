@@ -16,10 +16,10 @@ class ChipFlowController
 		}
 	}
 
-	public static function listChipFlow()
+	public static function listChipFlow($id)
 	{
 		try {	
-			return ChipFlow::all();
+			return ChipFlow::join('client_site_user as csu', 'csu.id', '=', 'client_site_user_id')->join('client_site as cs', 'cs.id', '=', 'csu.client_site_id')->join('site as s', 's.id', '=', 'cs.site_id')->join('client as c', 'c.id', '=', 'chip_flow.client_id')->join('agreed', 'agreed.id', '=', 'chip_flow.agreed_id')->where('chip_flow.client_id', $id)->selectRaw('chip_flow.*, agreed.agreed as agreed_id, CONCAT(csu.username, " - ", s.site) as client_id')->get();
 		} catch (Exception $ex) {
 			$data = array(
 				'msg' => $ex->getMessage(),
@@ -39,7 +39,7 @@ class ChipFlowController
 			$data = array(
 				'msg' => 'Movimentação de Fichas inserida com sucesso',
 				'class' => 'success', 
-				'route' => '/agreed-list'
+				'route' => '/client-view/' . $data['client_id']
 			);
 
 			return $data;
